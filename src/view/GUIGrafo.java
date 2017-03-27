@@ -247,7 +247,6 @@ public final class GUIGrafo extends GUI {
 		menuInserir.add(itemVerticeI);
 
 		// Inserir Edge
-		//itemArestaI.setMnemonic(KeyEvent.VK_C);
 		itemArestaI.addActionListener(new HandlerAddAresta());
 
 		menuInserir.add(itemArestaI);
