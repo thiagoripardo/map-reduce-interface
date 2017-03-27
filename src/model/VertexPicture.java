@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.io.Serializable;
 
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class FiguraVertice implements Serializable {
+public class VertexPicture implements Serializable {
 
 	/**
 	 * Atributos
@@ -32,10 +33,10 @@ public class FiguraVertice implements Serializable {
 	public boolean areaVertice;
 
 	/**
-	 * Construtor FiguraVertice
+	 * Construtor VertexPicture
 	 * @since 1.0
 	 */
-	public FiguraVertice(){
+	public VertexPicture(){
 
 		this.dx = this.x = 30;
 		this.dy = this.y = 30;
@@ -43,7 +44,7 @@ public class FiguraVertice implements Serializable {
 	}
 
 	/**
-	 * Construtor FiguraVertice
+	 * Construtor VertexPicture
 	 * @param nome String
 	 * @param x int
 	 * @param y int
@@ -51,14 +52,14 @@ public class FiguraVertice implements Serializable {
 	 * @param nomeF Integer
 	 * @since 1.0
 	 */
-	public FiguraVertice(String nome ,int x, int y, Integer nomeD, Integer nomeF){
+	public VertexPicture(String nome ,int x, int y, Integer nomeD, Integer nomeF){
 
 		
 		this.nomeVertice = nome;
 		this.nomeD = nomeD;
 		this.nomeF = nomeF;
 		
-		//inicia varival X e Y com a posição inicial
+		//inicia variavel X e Y com a posição inicial
 		if((x==0)||(y==0)){
 			this.dx = this.x = x+100;
 			this.dy = this.y = y+100;
@@ -88,7 +89,7 @@ public class FiguraVertice implements Serializable {
 	 * @param g Graphics
 	 * @since 1.0
 	 */
-	public void desenhandoCirculo(Graphics g) {
+	public void desenhandoComponente(Graphics g) {
 
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -122,17 +123,23 @@ public class FiguraVertice implements Serializable {
 		//g2d.fillOval(getX(),getY(),50,50);
 		g2d.fillRect(getX(), getY(), 75, 50);
 		g2d.setPaint(Color.black);
-		//Ellipse2D.Double circle = new Ellipse2D.Double(getX(),getY(),50,50);
-		//g2d.draw(circle);
+		Ellipse2D.Double circle = new Ellipse2D.Double(getX(),getY(),50,50);
+		//g2d.fillOval(getX(),getY(),50,50);
+		
+		g2d.draw(new Arc2D.Double(getX() -35, getY() +12.5, 25, 25, 90, -180, Arc2D.OPEN));
+		g.drawLine(getX() -10, getY() +25, getX(), getY() +25);
+		g.drawLine(getX() +75, getY() +25, getX() +85, getY() +25);
+		g2d.fillOval(getX() +85, getY() +15, 20, 20);
 		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
-		if(getCor().equals("Preto"))
-			g2d.setPaint(Color.white);
-		if ((this.nomeD != null)||(this.nomeF != null)){
-			if((this.nomeD != null)&&(this.nomeF == null))
-				g2d.drawString(Integer.toString(this.nomeD), getX()+22,getY()+28);
-			if((this.nomeD != null)&&(this.nomeF != null))
-				g2d.drawString(Integer.toString(this.nomeD)+"/"+Integer.toString(this.nomeF), getX()+13,getY()+28);
-		}
+		
+//		if(getCor().equals("Preto"))
+//			g2d.setPaint(Color.white);
+//		if ((this.nomeD != null)||(this.nomeF != null)){
+//			if((this.nomeD != null)&&(this.nomeF == null))
+//				g2d.drawString(Integer.toString(this.nomeD), getX()+22,getY()+28);
+//			if((this.nomeD != null)&&(this.nomeF != null))
+//				g2d.drawString(Integer.toString(this.nomeD)+"/"+Integer.toString(this.nomeF), getX()+13,getY()+28);
+//		}
 		Toolkit.getDefaultToolkit().sync();
     }
 	

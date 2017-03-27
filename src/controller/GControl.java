@@ -6,7 +6,8 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import view.GUI;
-import view.Quadro;
+import view.GUIGrafo;
+import view.GraphPane;
 import model.*;
 
 /**
@@ -23,17 +24,18 @@ public class GControl {
 	 * Atributos
 	 */
 	
-	private Grafo G = null;
+	private Graph G = null;
 	private  GUI frameDeControle;
-	private Quadro pane = null;
+	//private GraphPane pane = null;
 
 	/**
 	 * Construtor GControl
 	 * @param G
 	 * @since 1.0 
 	 */
-	public GControl(Grafo G){
+	public GControl(GUIGrafo frameDeControle, Graph G){
 		this.G = G;
+		this.frameDeControle = frameDeControle;
 	}
 
 	/**
@@ -53,13 +55,13 @@ public class GControl {
 	 * @since 1.0 
 	 */
 	public void addVertice(String nome, int x, int y) {
-		Vertice u = null;
+		Vertex u = null;
 		try {
 			u = G.getVertice(nome);
 		}
 		catch (NullPointerException e) {
-			G.getV().add(new Vertice(nome, x, y));
-			//JOptionPane.showMessageDialog(frameDeControle,"Vertice inserido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
+			G.getV().add(new Vertex(nome, x, y));
+			//JOptionPane.showMessageDialog(frameDeControle,"Vertex inserido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 		}
 		finally {
 			if(u!=null) 
@@ -76,16 +78,16 @@ public class GControl {
 	 * @since 1.0 
 	 */
 	public void addVertice(String nome, int x, int y, String cor) {
-		Vertice u = null;
+		Vertex u = null;
 		try {
 			u = G.getVertice(nome);
 		}
 		catch (NullPointerException e) {
-			Vertice v;
-			v = new Vertice(nome, x, y, cor);
+			Vertex v;
+			v = new Vertex(nome, x, y, cor);
 			v.getFigura().setCor(cor);
 			G.getV().add(v);
-			//JOptionPane.showMessageDialog(frameDeControle,"Vertice inserido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(frameDeControle,"Vertex inserido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 		}
 		finally {
 			if(u!=null) 
@@ -95,30 +97,30 @@ public class GControl {
 
 	/**
 	 * Adiciona vertice v
-	 * @param v model.Vertice
+	 * @param v model.Vertex
 	 * @since 1.0 
 	 */
-	public void addVertice(Vertice v) {
+	public void addVertice(Vertex v) {
 		G.getV().add(v);
 	}
 
 	/**
 	 * Adiciona a aresta e.
-	 * @param e model.Aresta
+	 * @param e model.Edge
 	 * @since 1.0 
 	 */
-	public void addAresta(Aresta e) {
+	public void addAresta(Edge e) {
 		G.getE().add(e);
 	}
 
 	/**
 	 * Adiciona aresta para dois vertices conhecidos.
-	 * @param u model.Vertice
-	 * @param v model.Vertice
+	 * @param u model.Vertex
+	 * @param v model.Vertex
 	 * @since 1.0 
 	 */
-	public void addAresta(Vertice u, Vertice v) {
-		G.getE().add(new Aresta(u, v));
+	public void addAresta(Vertex u, Vertex v) {
+		G.getE().add(new Edge(u, v));
 	}
 
 	/**
@@ -129,13 +131,13 @@ public class GControl {
 	 * @since 1.0 
 	 */
 	public void addAresta(String nome1, String nome2, int peso) {
-		Aresta e = null;
+		Edge e = null;
 		try {
 			e = G.getAresta(nome1, nome2);
 		}
 		catch(NullPointerException ex){
-			Vertice u = null;
-			Vertice v = null;
+			Vertex u = null;
+			Vertex v = null;
 			try{
 				u = G.getVertice(nome1);
 				v = G.getVertice(nome2);
@@ -144,8 +146,8 @@ public class GControl {
 				JOptionPane.showMessageDialog(frameDeControle,"Pelo menos um dos vertices inseridos nao existe, nao poderemos prosseguir. Tente novamente com vertices validos.","Ops! :(",JOptionPane.ERROR_MESSAGE);
 			}
 			if((u!=null)&&(v!=null)){
-				G.getE().add(new Aresta(u, v, peso));
-				//JOptionPane.showMessageDialog(frameDeControle,"Aresta inserida com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
+				G.getE().add(new Edge(u, v, peso));
+				//JOptionPane.showMessageDialog(frameDeControle,"Edge inserida com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		finally{
@@ -160,11 +162,11 @@ public class GControl {
 	 * @since 1.0 
 	 */
 	public void removerVertice(String nome) {
-		Vertice u = null;
+		Vertex u = null;
 		try{
 			u = G.getVertice(nome);
-			Iterator<Aresta> iter = G.getE().iterator();
-			Aresta e = null;
+			Iterator<Edge> iter = G.getE().iterator();
+			Edge e = null;
 
 			while (iter.hasNext()){
 				e = iter.next();
@@ -175,7 +177,7 @@ public class GControl {
 				}
 			}
 			G.getV().remove(u);
-			//JOptionPane.showMessageDialog(frameDeControle,"Vertice removido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(frameDeControle,"Vertex removido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 		}
 		catch(NullPointerException e){
 			JOptionPane.showMessageDialog(frameDeControle,"O vertice inserido nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
@@ -190,12 +192,12 @@ public class GControl {
 	 * @since 1.0 
 	 */
 	public void removerAresta(String nome1, String nome2) {
-		Aresta e = null;
+		Edge e = null;
 		try{
 
 			e = G.getAresta(nome1,nome2);
 			G.getE().remove(e);
-			//JOptionPane.showMessageDialog(frameDeControle,"Aresta removida com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(frameDeControle,"Edge removida com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 
 		}
 		catch (NullPointerException ex){
@@ -215,8 +217,8 @@ public class GControl {
 				try{
 					if(G.getVertice(s) != null){
 						resetarEstado();
-						Iterator<Vertice> iter = G.getV().iterator();
-						Vertice u = new Vertice();
+						Iterator<Vertex> iter = G.getV().iterator();
+						Vertex u = new Vertex();
 						while (iter.hasNext()){
 							u = iter.next();
 							u.setCor("Branco");
@@ -227,16 +229,16 @@ public class GControl {
 						G.getVertice(s).setCor("Cinza");
 						G.getVertice(s).setD(0);
 						atualizar(G.getVertice(s));
-						Fila<Vertice> f = new Fila<>();
+						Queue<Vertex> f = new Queue<>();
 						f.add(G.getVertice(s));
 						while(f.isEmpty() == false){
 							u = f.remove();
 							if(G.getDir() == false){
-								Iterator<Aresta> iter2 = G.getE().iterator();
+								Iterator<Edge> iter2 = G.getE().iterator();
 								while (iter2.hasNext()){
 
-									Aresta e = iter2.next();
-									Vertice v = new Vertice();
+									Edge e = iter2.next();
+									Vertex v = new Vertex();
 
 									if(e.containsU(u))
 										v = e.getV();
@@ -258,11 +260,11 @@ public class GControl {
 								atualizar(u);
 							}
 							else {
-								Iterator<Aresta> iter2 = G.getE().iterator();
+								Iterator<Edge> iter2 = G.getE().iterator();
 								while (iter2.hasNext()){
 
-									Aresta e = iter2.next();
-									Vertice v = new Vertice();
+									Edge e = iter2.next();
+									Vertex v = new Vertex();
 
 									if(e.containsU(u)){
 										v = e.getV();
@@ -302,8 +304,8 @@ public class GControl {
 			public void run() {
 
 				resetarEstado();
-				Vertice u = null;
-				Iterator<Vertice> iter = G.getV().iterator();
+				Vertex u = null;
+				Iterator<Vertex> iter = G.getV().iterator();
 				if(iter.hasNext()){
 					try{
 						u = G.getVertice(s);
@@ -316,7 +318,7 @@ public class GControl {
 						int tempo = 0;
 
 						tempo = visitar(G,G.getVertice(s),tempo);
-						Iterator<Vertice> iter2 = G.getV().iterator();
+						Iterator<Vertex> iter2 = G.getV().iterator();
 						while (iter2.hasNext()){
 							u = iter2.next();
 							if(u.getCor().equals("Branco")){
@@ -329,7 +331,7 @@ public class GControl {
 					}
 				}
 				else{
-					JOptionPane.showMessageDialog(frameDeControle,"O Grafo ainda nao contem um vertice, tente novamente apos inserir pelo menos um vertice","Ops! :(",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frameDeControle,"O Graph ainda nao contem um vertice, tente novamente apos inserir pelo menos um vertice","Ops! :(",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}).start();
@@ -337,23 +339,23 @@ public class GControl {
 
 	/**
 	 * Algoritmo visitar da busca em profundidade.
-	 * @param G model.Grafo
-	 * @param u model.Vertice
+	 * @param G model.Graph
+	 * @param u model.Vertex
 	 * @param tempo int
 	 * @return tempo Retorna novo tempo
 	 * @since 1.0 
 	 */
-	public int visitar(Grafo G, Vertice u, int tempo){
+	public int visitar(Graph G, Vertex u, int tempo){
 		tempo = tempo + 1;
 		u.setD(tempo);
 		u.setCor("Cinza");
 		atualizar(u);
 		if(G.getDir() == false){
-			Iterator<Aresta> iter = G.getE().iterator();
+			Iterator<Edge> iter = G.getE().iterator();
 			while (iter.hasNext()){
 
-				Aresta e = iter.next();
-				Vertice v = new Vertice();
+				Edge e = iter.next();
+				Vertex v = new Vertex();
 
 				if(e.containsU(u))
 					v = e.getV();
@@ -370,11 +372,11 @@ public class GControl {
 			}
 		}
 		else{
-			Iterator<Aresta> iter = G.getE().iterator();
+			Iterator<Edge> iter = G.getE().iterator();
 			while (iter.hasNext()){
 
-				Aresta e = iter.next();
-				Vertice v = new Vertice();
+				Edge e = iter.next();
+				Vertex v = new Vertex();
 
 				if(e.containsU(u)){
 					v = e.getV();
@@ -399,15 +401,16 @@ public class GControl {
 	 * Atualiza estado de determinado vertice.
 	 * Alterando sua cor, seu D e seu F. 
 	 * Também repinta após ter alterado.
-	 * @param u model.Vertice
+	 * @param u model.Vertex
 	 * @since 1.0 
 	 */
-	public void atualizar(Vertice u){
+	public void atualizar(Vertex u){
 
 		u.getFigura().setCor(u.getCor());
 		u.getFigura().setD(u.getD());
 		u.getFigura().setF(u.getF());
-		pane.repaint();
+		//pane.repaint();
+		this.frameDeControle.repaint();
 		dormir();
 	}
 
@@ -428,8 +431,8 @@ public class GControl {
 	 * @since 1.0 
 	 */
 	public void resetarEstado(){
-		Iterator<Vertice> iter = G.getV().iterator();
-		Vertice u = null;
+		Iterator<Vertex> iter = G.getV().iterator();
+		Vertex u = null;
 		while (iter.hasNext()){
 			u = iter.next();
 			u.setCor(null);
@@ -448,8 +451,8 @@ public class GControl {
 	 * @since 1.0 
 	 */
 	public void agrupar(int x, int y){
-		Iterator<Vertice> iter = G.getV().iterator();
-		Vertice u = null;
+		Iterator<Vertex> iter = G.getV().iterator();
+		Vertex u = null;
 		if(iter.hasNext()){
 			while (iter.hasNext()){
 				u = iter.next();
@@ -474,7 +477,7 @@ public class GControl {
 	 */
 	public void ajustar(String nome, int x, int y){
 		try{
-			Vertice u = G.getVertice(nome);
+			Vertex u = G.getVertice(nome);
 			u.setX(x);
 			u.setY(y);
 			u.getFigura().setX(x);
@@ -503,7 +506,7 @@ public class GControl {
 
 		for (i=0; i<=numeroE; i++){
 
-			Aresta e = null;
+			Edge e = null;
 			int primeiroVertice = gerador.nextInt(numeroV);
 			int segundoVertice = gerador.nextInt(numeroV);
 			try {
@@ -512,37 +515,38 @@ public class GControl {
 			catch(NullPointerException ex){
 				addAresta("v" + String.valueOf(primeiroVertice), "v" + String.valueOf(segundoVertice), 0);
 			}
-			finally {
+			finally { 
 				if(e!=null) {}
 			}
 		}
 	}
 
 	/**
-	 * Seta qual model.Grafo ira ser usado pela classe
-	 * @param G model.Grafo
+	 * Seta qual model.Graph ira ser usado pela classe
+	 * @param G model.Graph
 	 * @since 1.0 
 	 */
-	public void setGrafo(Grafo G){
+	public void setGrafo(Graph G){
 		this.G = G;
 	}
 
 	/**
-	 * Seta qual o view.Quadro vai ser usado pela classe
+	 * Seta qual o view.GraphPane vai ser usado pela classe
 	 * @param pane model.Quadro
+	 * @deprecated
 	 * @since 1.0 
 	 */
-	public void setQuadro(Quadro pane){
-		this.pane = pane;
+	public void setQuadro(GraphPane pane){
+		//this.pane = pane;
 	}
 
 	/**
-	 * Retorna o Grafo que esta instanciado em GControl
+	 * Retorna o Graph que esta instanciado em GControl
 	 * @deprecated
-	 * @return G <code>model.Grafo</code>
+	 * @return G <code>model.Graph</code>
 	 * @since 1.0 
 	 */
-	public Grafo getGrafo(){
+	public Graph getGrafo(){
 		return this.G;
 	}
 
@@ -552,19 +556,19 @@ public class GControl {
 	 * @since 1.0 
 	 */
 	public void novoGrafo(){
-		G = new Grafo();
+		G = new Graph();
 	}
 
 	/**
 	 * Inicia todos os vertices com a cor branca, seu D nulo e seu predecessor nulo.
 	 * @deprecated
-	 * @param s model.Vertice
+	 * @param s model.Vertex
 	 * @since 1.0 
 	 */
-	public void iniciar_fonte_unica(Vertice s) {
+	public void iniciar_fonte_unica(Vertex s) {
 		resetarEstado();
-		Iterator<Vertice> iter = G.getV().iterator();
-		Vertice u = new Vertice();
+		Iterator<Vertex> iter = G.getV().iterator();
+		Vertex u = new Vertex();
 		while (iter.hasNext()){
 			u = iter.next();
 			u.setCor("white");
@@ -579,10 +583,10 @@ public class GControl {
 	/**
 	 * Relaxar se o D de um vertice for maior que o D de seu predecessor + o peso da aresta.
 	 * @deprecated
-	 * @param s model.Aresta
+	 * @param s model.Edge
 	 * @since 1.0 
 	 */
-	public void relaxar(Aresta s) {
+	public void relaxar(Edge s) {
 		if((s.getV().getD())>(s.getU().getD() + s.getPeso())){
 			s.getV().setD(s.getU().getD() + s.getPeso());
 			s.getV().setPi(s.getU());
@@ -599,16 +603,16 @@ public class GControl {
 	public boolean bellman_ford(String s){
 		try{
 			iniciar_fonte_unica(G.getVertice(s));
-			Iterator<Vertice> iter = G.getV().iterator();
-			Iterator<Aresta> iter1 = G.getE().iterator();
+			Iterator<Vertex> iter = G.getV().iterator();
+			Iterator<Edge> iter1 = G.getE().iterator();
 			while (iter.hasNext()){
 				iter.next();
 				while (iter1.hasNext()){
 					relaxar(iter1.next());
 				}
 			}
-			Iterator<Aresta> iter2 = G.getE().iterator();
-			Aresta e = null;
+			Iterator<Edge> iter2 = G.getE().iterator();
+			Edge e = null;
 			while (iter2.hasNext()){
 				e = iter2.next();
 				if((e.getV().getD())>(e.getU().getD() + e.getPeso())){

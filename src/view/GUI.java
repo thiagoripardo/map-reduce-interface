@@ -44,7 +44,7 @@ public class GUI extends JFrame {
 	 */
 	public GUI(String title) throws HeadlessException {
 		super(title);
-		setSize(800,550);
+		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -57,7 +57,7 @@ public class GUI extends JFrame {
 	 */
 	public GUI(String title, GraphicsConfiguration gc) {
 		super(title, gc);
-		setSize(800,550);
+		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

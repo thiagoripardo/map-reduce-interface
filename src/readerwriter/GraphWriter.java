@@ -1,4 +1,4 @@
-package view;
+package readerwriter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,7 +7,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import model.Grafo;
+import model.Graph;
+import view.GUI;
 
 /**
  * Classe que implementa como salvar um arquivo do tipo .graph
@@ -15,17 +16,17 @@ import model.Grafo;
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class SalvandoGrafo {
+public class GraphWriter {
 
-	private Grafo G = null;
+	private Graph G = null;
 	private GUI frameDeControle;
 
 	/**
-	 * Construtor SalvandoGrafo
-	 * @param G model.Grafo
+	 * Construtor GraphWriter
+	 * @param G model.Graph
 	 * @since 1.0
 	 */
-	public SalvandoGrafo(Grafo G) {
+	public GraphWriter(Graph G) {
 		this.G = G;
 	}
 

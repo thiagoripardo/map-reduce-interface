@@ -1,4 +1,4 @@
-package view;
+package readerwriter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 //import view.GUI;
 import model.*;
+import view.GUI;
 
 /**
  * Classe que implementa como abrir um arquivo.
@@ -16,29 +17,29 @@ import model.*;
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class AbrindoGrafo {
+public class GraphReader {
 
 	private GUI frameDeControle;
 
 	/**
-	 * Construtor AbrindoGrafo
+	 * Construtor GraphReader
 	 * @since 1.0
 	 */
-	public AbrindoGrafo() {}
+	public GraphReader() {}
 
 	/**
 	 * Metodo para iniciar operação de abrir arquivo serializado 
-	 * @return G model.Grafo
+	 * @return G model.Graph
 	 * @throws NullPointerException
 	 * @since 1.0
 	 */
-	public Grafo iniciar() throws NullPointerException{
+	public Graph iniciar() throws NullPointerException{
 
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter("Arquivo .graph", "graph"));    
 		fc.setAcceptAllFileFilterUsed(false); 
 		int c = fc.showOpenDialog(null);
-		Grafo G = null;
+		Graph G = null;
 
 		if(c == JFileChooser.APPROVE_OPTION){
 
@@ -52,7 +53,7 @@ public class AbrindoGrafo {
 					G2 = oi.readObject();
 					oi.close(); 
 					fi.close(); 
-					G = (Grafo)G2;
+					G = (Graph)G2;
 					return G;
 					
 				} 

@@ -15,26 +15,26 @@ import java.lang.reflect.Array;
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class FiguraAresta implements Serializable {
+public class EdgePicture implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	FiguraVertice img1=null, img2=null;
+	VertexPicture img1=null, img2=null;
 	int peso;
 
 	/**
-	 * Construtor FiguraAresta
+	 * Construtor EdgePicture
 	 * @since 1.0 
 	 */
-	public FiguraAresta(){}
+	public EdgePicture(){}
 
 	/**
-	 * Construtor FiguraAresta
-	 * @param img1 model.FiguraVertice
-	 * @param img2 model.FiguraVertice
+	 * Construtor EdgePicture
+	 * @param img1 model.VertexPicture
+	 * @param img2 model.VertexPicture
 	 * @param peso int
 	 * @since 1.0 
 	 */
-	public FiguraAresta(FiguraVertice img1, FiguraVertice img2, int peso){
+	public EdgePicture(VertexPicture img1, VertexPicture img2, int peso){
 
 		this.img1 = img1;
 		this.img1 = img1;

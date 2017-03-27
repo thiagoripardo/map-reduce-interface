@@ -9,12 +9,12 @@ import java.util.*;
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class Fila<No> implements Serializable {
+public class Queue<No> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private LinkedList<No> f = new LinkedList<No>();
 	
-	public Fila() {}
+	public Queue() {}
 
 	public int size() {
 		return this.f.size();
@@ -29,13 +29,13 @@ public class Fila<No> implements Serializable {
 	
 	public No peek() {
 		if(isEmpty())
-			System.out.println("Fila Vazia");
+			System.out.println("Queue Vazia");
 		return f.getFirst();
 	}
 	
 	public No remove() {
 		if(isEmpty())
-			System.out.println("Fila Vazia");
+			System.out.println("Queue Vazia");
 		No r = f.removeFirst();
 		return r;
 	}

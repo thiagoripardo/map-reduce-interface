@@ -4,23 +4,31 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Classe que representa o Grafo em nossa aplicacao.
+ * Classe que representa o Graph em nossa aplicacao.
  * 
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class Grafo implements Serializable {
+public class Graph implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private HashSet<Vertice> V = new HashSet<>();
-	private HashSet<Aresta> E = new HashSet<>();
+	private HashSet<Vertex> V = new HashSet<>();
+	private HashSet<Edge> E = new HashSet<>();
 	private boolean dir;
 
 	/**
-	 * Construtor do Grafo
+	 * Construtor do Graph
 	 * @since 1.0
 	 */
-	public Grafo() {}
+	public Graph() {}
+	
+	/**
+	 * Construtor do Graph
+	 * @since 1.1
+	 */
+	public Graph(boolean dir) {
+		this.dir = dir;
+	}
 	
 	/**
 	 * Metodo para setar se eh direcionado ou nao
@@ -35,7 +43,7 @@ public class Grafo implements Serializable {
 	 * @return V HashSet
 	 * @since 1.0
 	 */
-	public HashSet<Vertice> getV(){
+	public HashSet<Vertex> getV(){
 		return this.V;
 	}
 	
@@ -44,7 +52,7 @@ public class Grafo implements Serializable {
 	 * @return E HashSet
 	 * @since 1.0
 	 */
-	public HashSet<Aresta> getE(){
+	public HashSet<Edge> getE(){
 		return this.E;
 	}
 	
@@ -60,14 +68,14 @@ public class Grafo implements Serializable {
 	/**
 	 * Metodo para retornar um determinado vertice
 	 * @param nome String
-	 * @return v model.Vertice
+	 * @return v model.Vertex
 	 * @throws NullPointerException
 	 * @since 1.0
 	 */
-	public Vertice getVertice(String nome) throws NullPointerException{
-		Iterator<Vertice> iter = getV().iterator();
-		Vertice u = null;
-		Vertice v = null;
+	public Vertex getVertice(String nome) throws NullPointerException{
+		Iterator<Vertex> iter = getV().iterator();
+		Vertex u = null;
+		Vertex v = null;
 		while (iter.hasNext()){
 			u = iter.next();
 			if(u.getNome().equals(nome)){
@@ -82,16 +90,16 @@ public class Grafo implements Serializable {
 	 * Metodo para retornar uma determinada aresta
 	 * @param nome1 String
 	 * @param nome2 String
-	 * @return e model.Aresta
+	 * @return e model.Edge
 	 * @throws NullPointerException
 	 * @since 1.0
 	 */
-	public Aresta getAresta(String nome1, String nome2) throws NullPointerException{
-		Vertice u = null;
-		Vertice v = null;
-		Vertice v2 = null;
+	public Edge getAresta(String nome1, String nome2) throws NullPointerException{
+		Vertex u = null;
+		Vertex v = null;
+		Vertex v2 = null;
 		
-		Iterator<Vertice> iter = getV().iterator();
+		Iterator<Vertex> iter = getV().iterator();
 		while (iter.hasNext()){
 			u = iter.next();
 			if(u.getNome().equals(nome1)){
@@ -102,9 +110,9 @@ public class Grafo implements Serializable {
 			}
 		}
 		
-		Iterator<Aresta> iter2 = getE().iterator();
-		Aresta e = null;
-		Aresta e2 = null;
+		Iterator<Edge> iter2 = getE().iterator();
+		Edge e = null;
+		Edge e2 = null;
 		
 		if(getDir()){
 			while (iter2.hasNext()){
@@ -122,19 +130,19 @@ public class Grafo implements Serializable {
 				}
 			}
 		}
-		if(e2 == null)throw new NullPointerException("Aresta inexistente!");
+		if(e2 == null)throw new NullPointerException("Edge inexistente!");
 		else return e2;
 	}
 	
 	/**
 	 * Metodo para retornar informacoes sobre vertices
-	 * @return nome model.Vertice
+	 * @return nome model.Vertex
 	 * @since 1.0
 	 */
 	public String getInfoVertices(){
-		Iterator<Vertice> iter = getV().iterator();
+		Iterator<Vertex> iter = getV().iterator();
 		String nome = "{";
-		Vertice u = null;
+		Vertex u = null;
 
 		while (iter.hasNext()){
 			u = iter.next();
@@ -149,16 +157,16 @@ public class Grafo implements Serializable {
 
 	/**
 	 * Metodo para retornar informacoes sobre arestas
-	 * @return nome model.Aresta
+	 * @return nome model.Edge
 	 * @since 1.0
 	 */
 	public String getInfoArestas(){
 		String nome = "{";
 
-		Iterator<Aresta> iter = getE().iterator();
-		Aresta edge = null;
-		Vertice u = null;
-		Vertice v = null;
+		Iterator<Edge> iter = getE().iterator();
+		Edge edge = null;
+		Vertex u = null;
+		Vertex v = null;
 
 		while (iter.hasNext()){
 

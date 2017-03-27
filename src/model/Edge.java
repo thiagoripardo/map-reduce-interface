@@ -3,79 +3,79 @@ package model;
 import java.io.Serializable;
 
 /**
- * Classe que representa a Aresta de um grafo.
+ * Classe que representa a Edge de um grafo.
  * 
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class Aresta implements Serializable {
+public class Edge implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private int peso;
 	private String nome;
-	private Vertice u, v;
-	private FiguraAresta a = null;
+	private Vertex u, v;
+	private EdgePicture a = null;
 	
 	/**
-	 * Construtor Aresta
+	 * Construtor Edge
 	 * @since 1.0 
 	 */
-	public Aresta(){}
+	public Edge(){}
 
 	/**
-	 * Construtor Aresta
-	 * @param u model.Vertice
-	 * @param v model.Vertice
+	 * Construtor Edge
+	 * @param u model.Vertex
+	 * @param v model.Vertex
 	 * @since 1.0 
 	 */
-	public Aresta(Vertice u, Vertice v){
+	public Edge(Vertex u, Vertex v){
 		setVerticeU(u);
 		setVerticeV(v);
-		this.a = new FiguraAresta(u.getFigura(),v.getFigura(), 0);
+		this.a = new EdgePicture(u.getFigura(),v.getFigura(), 0);
 	}
 	
 	/**
-	 * Construtor Aresta
-	 * @param u model.Vertice
-	 * @param v model.Vertice
+	 * Construtor Edge
+	 * @param u model.Vertex
+	 * @param v model.Vertex
 	 * @param peso int
 	 * @since 1.0 
 	 */
-	public Aresta(Vertice u, Vertice v, int peso){
+	public Edge(Vertex u, Vertex v, int peso){
 		setVerticeU(u);
 		setVerticeV(v);
 		setPeso(peso);
-		this.a = new FiguraAresta(u.getFigura(),v.getFigura(), peso);
+		this.a = new EdgePicture(u.getFigura(),v.getFigura(), peso);
 	}
 
 	/**
-	 * Construtor Aresta
-	 * @param u model.Vertice
-	 * @param v model.Vertice
+	 * Construtor Edge
+	 * @param u model.Vertex
+	 * @param v model.Vertex
 	 * @param nome String
 	 * @since 1.0 
 	 */
-	public Aresta(Vertice u, Vertice v, String nome){
+	public Edge(Vertex u, Vertex v, String nome){
 		setNome(nome);
 		setVerticeU(u);
 		setVerticeV(v);
-		this.a = new FiguraAresta(u.getFigura(),v.getFigura(), 0);
+		this.a = new EdgePicture(u.getFigura(),v.getFigura(), 0);
 	}
 
 	/**
-	 * Construtor Aresta
-	 * @param u model.Vertice
-	 * @param v model.Vertice
+	 * Construtor Edge
+	 * @param u model.Vertex
+	 * @param v model.Vertex
 	 * @param nome String
 	 * @param peso int
 	 * @since 1.0 
 	 */
-	public Aresta(Vertice u, Vertice v, String nome, int peso){
+	public Edge(Vertex u, Vertex v, String nome, int peso){
 		setNome(nome);
 		setVerticeU(u);
 		setVerticeV(v);
 		setPeso(peso);
-		this.a = new FiguraAresta(u.getFigura(),v.getFigura(), peso);
+		this.a = new EdgePicture(u.getFigura(),v.getFigura(), peso);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class Aresta implements Serializable {
 	 * Metodo para setar vertice u
 	 * @since 1.0 
 	 */
-	public void setVerticeU(Vertice u){
+	public void setVerticeU(Vertex u){
 		this.u = u;
 	}
 
@@ -99,7 +99,7 @@ public class Aresta implements Serializable {
 	 * Metodo para setar vertice v
 	 * @since 1.0 
 	 */
-	public void setVerticeV(Vertice v){
+	public void setVerticeV(Vertex v){
 		this.v = v;
 	}
 
@@ -113,19 +113,19 @@ public class Aresta implements Serializable {
 
 	/**
 	 * Metodo para retornar vertice u
-	 * @return Vertice u
+	 * @return Vertex u
 	 * @since 1.0 
 	 */
-	public Vertice getU(){
+	public Vertex getU(){
 		return this.u;
 	}
 
 	/**
 	 * Metodo para retornar vertice u
-	 * @return Vertice v
+	 * @return Vertex v
 	 * @since 1.0 
 	 */
-	public Vertice getV(){
+	public Vertex getV(){
 		return this.v;
 	}
 
@@ -150,10 +150,10 @@ public class Aresta implements Serializable {
 
 	/**
 	 * Metodo para retornar Figura da aresta
-	 * @return a model.FiguraAresta
+	 * @return a model.EdgePicture
 	 * @since 1.0 
 	 */
-	public FiguraAresta getFigura() throws NullPointerException{
+	public EdgePicture getFigura() throws NullPointerException{
 		if(this.v == null) throw new NullPointerException("NULO");
 		else return this.a;
 	}
@@ -163,7 +163,7 @@ public class Aresta implements Serializable {
 	 * @return boolean
 	 * @since 1.0 
 	 */
-	public boolean equals(Aresta e){
+	public boolean equals(Edge e){
 		if((this.u.equals(e.getU()))&&(this.v.equals(e.getV())))
 			return true;
 		else
@@ -175,7 +175,7 @@ public class Aresta implements Serializable {
 	 * @return boolean
 	 * @since 1.0 
 	 */
-	public boolean equalsOposta(Aresta e){
+	public boolean equalsOposta(Edge e){
 		if((this.u.equals(e.getV()))&&(this.v.equals(e.getU())))
 			return true;
 		else
@@ -187,7 +187,7 @@ public class Aresta implements Serializable {
 	 * @return boolean
 	 * @since 1.0 
 	 */
-	public boolean containsV(Vertice v) {
+	public boolean containsV(Vertex v) {
 		if(this.v.equals(v))
 			return true;
 		else
@@ -199,7 +199,7 @@ public class Aresta implements Serializable {
 	 * @return boolean
 	 * @since 1.0 
 	 */
-	public boolean containsU(Vertice u) {
+	public boolean containsU(Vertex u) {
 		if(this.u.equals(u))
 			return true;
 		else
@@ -211,7 +211,7 @@ public class Aresta implements Serializable {
 	 * @return boolean
 	 * @since 1.0 
 	 */
-	public boolean containsUV(Vertice u, Vertice v) {
+	public boolean containsUV(Vertex u, Vertex v) {
 		if((this.u.equals(u))&&(this.v.equals(v)))
 			return true;
 		else

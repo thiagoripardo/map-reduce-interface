@@ -2,7 +2,9 @@ package view;
 
 import javax.swing.*;
 
-import model.Grafo;
+import model.Graph;
+import readerwriter.GraphReader;
+import readerwriter.GraphWriter;
 import controller.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -19,10 +21,10 @@ import java.awt.event.*;
 public final class GUIGrafo extends GUI {
 
 	private static final long serialVersionUID = 1L;
-	private GUI frameDeControle;
-	private Grafo G = new Grafo();
-	private GControl gc = new GControl(G);
-	private final Quadro pane2 = new Quadro(G);
+	//private GUI frameDeControle;
+	private Graph G = new Graph(true);
+	private GControl gc = new GControl(this, G);
+	private final GraphPane pane2 = new GraphPane(G);
 	
 	/**
 	 * Construtor da classe GUIGrafo
@@ -39,10 +41,10 @@ public final class GUIGrafo extends GUI {
 	 */
 	
 	public void iniciar(){
-
+		
 		// Instanciar Paineis
 		JPanel pane = new JPanel(new BorderLayout());
-		gc.setQuadro(pane2);
+		//gc.setQuadro(pane2);
 		pane.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 
 		// Icone da GUIGrafo(frame)
@@ -218,16 +220,17 @@ public final class GUIGrafo extends GUI {
 
 		// Direcionado
 		//itemDirecionado.setMnemonic(KeyEvent.VK_C);
+		itemDirecionado.setSelected(true);
 		itemDirecionado.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
 				if(itemDirecionado.isSelected()){
 					gc.addDir(true);
-					JOptionPane.showMessageDialog(frameDeControle,"O Grafo agora é direcionado.","Direcao do Grafo",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,"O Graph agora é direcionado.","Direcao do Graph",JOptionPane.INFORMATION_MESSAGE);
 				}
 				else{
 					gc.addDir(false);
-					JOptionPane.showMessageDialog(frameDeControle,"O Grafo agora não é direcionado.","Direcaoo do Grafo",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,"O Graph agora não é direcionado.","Direcaoo do Graph",JOptionPane.INFORMATION_MESSAGE);
 				}
 				repaint();
 			}
@@ -239,12 +242,12 @@ public final class GUIGrafo extends GUI {
 		// Agrupar
 		itemAgrupar.addActionListener(new HandlerAgrupar());
 
-		// Inserir Vertice
+		// Inserir Vertex
 		//itemVerticeI.setMnemonic(KeyEvent.VK_C);
 		itemVerticeI.addActionListener(new HandlerAddVertice());
 		menuInserir.add(itemVerticeI);
 
-		// Inserir Aresta
+		// Inserir Edge
 		//itemArestaI.setMnemonic(KeyEvent.VK_C);
 		itemArestaI.addActionListener(new HandlerAddAresta());
 
@@ -252,13 +255,13 @@ public final class GUIGrafo extends GUI {
 
 		//menuRemover.setMnemonic(KeyEvent.VK_W);
 
-		// Remover Vertice
+		// Remover Vertex
 		itemVerticeR.setMnemonic(KeyEvent.VK_W);
 		itemVerticeR.addActionListener(new HandlerRemVertice());
 
 		menuRemover.add(itemVerticeR);
 
-		// Remover Aresta
+		// Remover Edge
 		//itemArestaR.setMnemonic(KeyEvent.VK_W);
 		itemArestaR.addActionListener(new HandlerRemAresta());
 
@@ -306,12 +309,12 @@ public final class GUIGrafo extends GUI {
 
 		menuInfo.addSeparator();
 
-		// Vertice Especifico
+		// Vertex Especifico
 		//itemVEsp.setMnemonic(KeyEvent.VK_C);
 		itemVEsp.addActionListener(new HandlerVerticeEsp());
 		menuInfo.add(itemVEsp);
 
-		// Aresta Especifica
+		// Edge Especifica
 		//itemAEsp.setMnemonic(KeyEvent.VK_C);
 		itemAEsp.addActionListener(new HandlerAddAresta());
 		menuInfo.add(itemAEsp);
@@ -360,18 +363,28 @@ public final class GUIGrafo extends GUI {
 		toolBar.setBackground(new Color(220,220,220));
 		toolBar.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 		pane2.setBackground(new Color(220,220,220));
+		pane2.setBorder(BorderFactory.createTitledBorder(
+				"Clique e arraste para mover os componentes"));
+		pane2.setToolTipText("teste");
+		JPanel pane3 = new JPanel(new BorderLayout());
+		//pane3.setBorder(BorderFactory.createTitledBorder("Clique e arraste para mover os componentes"));
+		//pane.add(pane3, BorderLayout.WEST);
 		pane.add(toolBar, BorderLayout.PAGE_START);
 		pane.add(pane2, BorderLayout.CENTER);
+		
 		setContentPane(pane);
-		setSize(900,600);
+//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//		setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
+//		setResizable(true);
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 	
 	/**
-	 * Seta qual model.Grafo ira ser usado pela classe
-	 * @param G model.Grafo
+	 * Seta qual model.Graph ira ser usado pela classe
+	 * @param G model.Graph
 	 * @since 1.0 
 	 */
-	public void setGrafo(Grafo G){
+	public void setGrafo(Graph G){
 		this.G = G;
 	}
 	
@@ -384,17 +397,17 @@ public final class GUIGrafo extends GUI {
 	private class HandlerNovo implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Object[] message = {"Esta ação apagará todo o conteudo do Grafo.\nDeseja salvá-lo antes de cotinuar?"};
-			int option = JOptionPane.showOptionDialog(frameDeControle, message, "Novo Grafo", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Não","Cancelar"}, "Sim");
+			Object[] message = {"Esta ação apagará todo o conteudo do Graph.\nDeseja salvá-lo antes de cotinuar?"};
+			int option = JOptionPane.showOptionDialog(null, message, "Novo Graph", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Não","Cancelar"}, "Sim");
 			if(option == JOptionPane.YES_OPTION){
-				(new SalvandoGrafo(G)).iniciar();
-				setGrafo(new Grafo());
+				(new GraphWriter(G)).iniciar();
+				setGrafo(new Graph());
 				gc.setGrafo(G);
 				pane2.setGrafo(G);
 				repaint();
 			}
 			if(option == JOptionPane.NO_OPTION){
-				setGrafo(new Grafo());
+				setGrafo(new Graph());
 				gc.setGrafo(G);
 				pane2.setGrafo(G);
 				repaint();
@@ -411,7 +424,7 @@ public final class GUIGrafo extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try{
-				AbrindoGrafo ag = new AbrindoGrafo();
+				GraphReader ag = new GraphReader();
 				setGrafo(ag.iniciar());
 				gc.setGrafo(G);
 				pane2.setGrafo(G);
@@ -430,7 +443,7 @@ public final class GUIGrafo extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			(new SalvandoGrafo(G)).iniciar();
+			(new GraphWriter(G)).iniciar();
 		}
 	}
 
@@ -443,7 +456,7 @@ public final class GUIGrafo extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object[] message = {"Deseja fechar o programa?\nVoce tem certeza disso?"};
-			int option = JOptionPane.showOptionDialog(frameDeControle, message, "Sair", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Nao"}, "Nao");
+			int option = JOptionPane.showOptionDialog(null, message, "Sair", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Nao"}, "Nao");
 			if(option == JOptionPane.YES_OPTION){
 				setVisible(false);
 				dispose();
@@ -467,14 +480,14 @@ public final class GUIGrafo extends GUI {
 					"Posicao X:", nome1,
 					"Posicao Y:", nome2
 			};		
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Agrupar Componentes", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog(null, message, "Agrupar Componentes", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try{
 					gc.agrupar(Integer.parseInt(nome1.getText()), Integer.parseInt(nome2.getText()));
 					repaint();
 				}
 				catch(NumberFormatException ex) {
-					JOptionPane.showMessageDialog(frameDeControle,"As posicoes estao incorretas. Tente novamente com posicoes validas","Ops! :(",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"As posicoes estao incorretas. Tente novamente com posicoes validas","Ops! :(",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
@@ -500,14 +513,14 @@ public final class GUIGrafo extends GUI {
 					"Posicao X:", nome1,
 					"Posicao Y:", nome2
 			};		
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Ajustar Posição de Componente", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog(null, message, "Ajustar Posição de Componente", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try{
 					gc.ajustar(nome.getText(), Integer.parseInt(nome1.getText()), Integer.parseInt(nome2.getText()));
 					repaint();
 				}
 				catch(NumberFormatException ex) {
-					JOptionPane.showMessageDialog(frameDeControle,"As posicoes estao incorretas. Tente novamente com posicoes validas","Ops! :(",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"As posicoes estao incorretas. Tente novamente com posicoes validas","Ops! :(",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
@@ -524,10 +537,10 @@ public final class GUIGrafo extends GUI {
 		@Override
 		/*public void actionPerformed(ActionEvent e) {
 
-			String inputValue = JOptionPane.showInputDialog(frameDeControle,"Entre com o nome do vertice:","Inserir Vertice", JOptionPane.QUESTION_MESSAGE);
+			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do vertice:","Inserir Vertex", JOptionPane.QUESTION_MESSAGE);
 			try{
 				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(frameDeControle,"\nUm vertice nao pode ser nulo, certo?\n\nInsira (novamente) o nome do vertice:","Que feio! :/",JOptionPane.QUESTION_MESSAGE);
+					inputValue = JOptionPane.showInputDialog(null,"\nUm vertice nao pode ser nulo, certo?\n\nInsira (novamente) o nome do vertice:","Que feio! :/",JOptionPane.QUESTION_MESSAGE);
 				int x=0 , y=0;
 				gc.addVertice(inputValue, x, y);
 				repaint();
@@ -544,7 +557,6 @@ public final class GUIGrafo extends GUI {
                     "Shuffler", "Reducer", "Result"};
 
 			JComboBox<String> types = new JComboBox<>(titles);
-			
 			String t = "0";
 			Object[] message = {
 					"Entre com o nome do componente:", nome,
@@ -554,7 +566,7 @@ public final class GUIGrafo extends GUI {
 			};		
 
 			
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Inserir Componentes", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog(null, message, "Inserir Componentes", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try{
 					String selectedType = (String) types.getSelectedItem();
@@ -564,7 +576,7 @@ public final class GUIGrafo extends GUI {
 					}
 					while(nome.getText().equals("")){
 
-						option = JOptionPane.showConfirmDialog(frameDeControle, message,"Insira novamente! :/", JOptionPane.OK_CANCEL_OPTION);
+						option = JOptionPane.showConfirmDialog(null, message,"Insira novamente! :/", JOptionPane.OK_CANCEL_OPTION);
 						if(nome1.getText().equals("")||nome2.getText().equals("")){
 							nome1.setText(t);
 							nome2.setText(t);
@@ -585,7 +597,7 @@ public final class GUIGrafo extends GUI {
 					repaint();
 				}
 				catch(NumberFormatException ex) {
-					JOptionPane.showMessageDialog(frameDeControle,"As posicoes estao incorretas. Tente novamente com posicoes validas","Ops! :(",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"As posicoes estao incorretas. Tente novamente com posicoes validas","Ops! :(",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 
@@ -600,10 +612,10 @@ public final class GUIGrafo extends GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String inputValue = JOptionPane.showInputDialog(frameDeControle,"Entre com o nome do componente:","Remover Componente", JOptionPane.QUESTION_MESSAGE);
+			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do componente:","Remover Componente", JOptionPane.QUESTION_MESSAGE);
 			try{
 				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(frameDeControle,"\nUm componente nao pode ser nulo, certo?\n\nInsira o nome do vertice:","Que feio! :/",JOptionPane.QUESTION_MESSAGE);
+					inputValue = JOptionPane.showInputDialog(null,"\nUm componente nao pode ser nulo, certo?\n\nInsira o nome do vertice:","Que feio! :/",JOptionPane.QUESTION_MESSAGE);
 				gc.removerVertice(inputValue);
 				repaint();
 			}
@@ -630,7 +642,7 @@ public final class GUIGrafo extends GUI {
 					"Primeiro componente:", nome1,
 					"Segundo componente:", nome2
 			};		
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Inserir Ligacao", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog(null, message, "Inserir Ligacao", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				gc.addAresta(nome1.getText(),nome2.getText(),0);
 				repaint();
@@ -647,7 +659,7 @@ public final class GUIGrafo extends GUI {
 					"Entre com o peso (Bellman-Ford, Djisktra)-(Opcional):", peso
 			};		
 
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Inserir Aresta", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Inserir Edge", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try{
 					if(peso.getText().equals("")){
@@ -694,12 +706,12 @@ public final class GUIGrafo extends GUI {
 					"Primeiro componente:", nome1,
 					"Segundo componente:", nome2
 			};		
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Remover Ligacao", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog(null, message, "Remover Ligacao", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				//gc.addAresta(nome1.getText(),nome2.getText());
 				try {
 					while((nome1.getText().equals("")||nome2.getText().equals(""))&&(option == JOptionPane.OK_OPTION)){
-						option = JOptionPane.showConfirmDialog(frameDeControle, message, "Remover Ligacao", JOptionPane.OK_CANCEL_OPTION);
+						option = JOptionPane.showConfirmDialog(null, message, "Remover Ligacao", JOptionPane.OK_CANCEL_OPTION);
 					}
 					if(option == JOptionPane.OK_OPTION)
 						gc.removerAresta(nome1.getText(), nome2.getText());
@@ -707,7 +719,7 @@ public final class GUIGrafo extends GUI {
 				}
 				catch(NullPointerException ex){
 
-					//JOptionPane.showMessageDialog(frameDeControle,"A Aresta inserida nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+					//JOptionPane.showMessageDialog(frameDeControle,"A Edge inserida nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -725,7 +737,7 @@ public final class GUIGrafo extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			gc.resetarEstado();
-			JOptionPane.showMessageDialog(frameDeControle, "Resetado com sucesso. O grafo voltou ao estado original","Resetar Grafo", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Resetado com sucesso. O grafo voltou ao estado original","Resetar Graph", JOptionPane.INFORMATION_MESSAGE);
 			repaint();
 		}
 	}
@@ -739,10 +751,10 @@ public final class GUIGrafo extends GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Object[] message = {"Esta ação apagará todo o conteudo do Grafo atual e gerará um novo grafo aleatoriamente.\nVoce tem certeza disso?"};
-			int option = JOptionPane.showOptionDialog(frameDeControle, message, "Grafo Aleatório", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Nao"}, "Nao");
+			Object[] message = {"Esta ação apagará todo o conteudo do Graph atual e gerará um novo grafo aleatoriamente.\nVoce tem certeza disso?"};
+			int option = JOptionPane.showOptionDialog(null, message, "Graph Aleatório", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Nao"}, "Nao");
 			if(option == JOptionPane.YES_OPTION){
-				setGrafo(new Grafo());
+				setGrafo(new Graph());
 				gc.setGrafo(G);
 				pane2.setGrafo(G);
 				repaint();
@@ -782,10 +794,10 @@ public final class GUIGrafo extends GUI {
 				}
 			}*/
 
-			String inputValue = JOptionPane.showInputDialog(frameDeControle,"Entre com o nome do vertice fonte:","Busca em Largura", JOptionPane.QUESTION_MESSAGE);
+			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do vertice fonte:","Busca em Largura", JOptionPane.QUESTION_MESSAGE);
 			try{
 				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(frameDeControle,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Largura",JOptionPane.QUESTION_MESSAGE);
+					inputValue = JOptionPane.showInputDialog(null,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Largura",JOptionPane.QUESTION_MESSAGE);
 				gc.buscaEmLargura(inputValue);
 				repaint();
 			}
@@ -810,10 +822,10 @@ public final class GUIGrafo extends GUI {
 			}*/
 
 
-			String inputValue = JOptionPane.showInputDialog(frameDeControle,"Entre com o nome do vertice fonte:","Busca em Profundidade", JOptionPane.QUESTION_MESSAGE);
+			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do vertice fonte:","Busca em Profundidade", JOptionPane.QUESTION_MESSAGE);
 			try{
 				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(frameDeControle,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Profundidade",JOptionPane.QUESTION_MESSAGE);
+					inputValue = JOptionPane.showInputDialog(null,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Profundidade",JOptionPane.QUESTION_MESSAGE);
 				gc.buscaEmProfundidade(inputValue);
 				repaint();
 			}
@@ -825,11 +837,11 @@ public final class GUIGrafo extends GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String inputValue = JOptionPane.showInputDialog(frameDeControle,"Entre com o nome do vertice fonte:","Busca em Largura", JOptionPane.QUESTION_MESSAGE);
+			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do vertice fonte:","Busca em Largura", JOptionPane.QUESTION_MESSAGE);
 			boolean a;
 			try{
 				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(frameDeControle,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Largura",JOptionPane.QUESTION_MESSAGE);
+					inputValue = JOptionPane.showInputDialog(null,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Largura",JOptionPane.QUESTION_MESSAGE);
 				a = gc.bellman_ford(inputValue);
 				JOptionPane.showMessageDialog(frameDeControle, a,"Geral", JOptionPane.INFORMATION_MESSAGE);
 				repaint();
@@ -852,7 +864,7 @@ public final class GUIGrafo extends GUI {
 				nome = "Direcionado.";
 			else
 				nome = "Não direcionado.";
-			JOptionPane.showMessageDialog(frameDeControle, "Componentes:"+ G.getV().size()+ "\n Ligacoes:" +G.getE().size()+ "\n" +nome,"Geral", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Componentes:"+ G.getV().size()+ "\n Ligacoes:" +G.getE().size()+ "\n" +nome,"Geral", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -865,23 +877,23 @@ public final class GUIGrafo extends GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//String inputValue = JOptionPane.showInputDialog(frameDeControle,"Entre com o nome do vertice","Vertice (Especifico)", JOptionPane.DEFAULT_OPTION);
+			//String inputValue = JOptionPane.showInputDialog(frameDeControle,"Entre com o nome do vertice","Vertex (Especifico)", JOptionPane.DEFAULT_OPTION);
 			JTextField nome1 = new JTextField();
 
 			Object[] message = {"Entre com o nome do componente", nome1};
 
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Componente (Especifico)", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog(null, message, "Componente (Especifico)", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try {
 					String value = G.getVertice(nome1.getText()).getPi().getNome();
-					JOptionPane.showMessageDialog(frameDeControle, "Nome: "+G.getVertice(nome1.getText()).getNome()+"\nCor: "+G.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+G.getVertice(nome1.getText()).getFigura().getX()+", y="+G.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+G.getVertice(nome1.getText()).getD()+"\nF: "+G.getVertice(nome1.getText()).getF()+"\nPredecessor: "+value+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Nome: "+G.getVertice(nome1.getText()).getNome()+"\nCor: "+G.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+G.getVertice(nome1.getText()).getFigura().getX()+", y="+G.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+G.getVertice(nome1.getText()).getD()+"\nF: "+G.getVertice(nome1.getText()).getF()+"\nPredecessor: "+value+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(NullPointerException ex){
 					try {
-						JOptionPane.showMessageDialog(frameDeControle, "Nome: "+G.getVertice(nome1.getText()).getNome()+"\nCor: "+G.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+G.getVertice(nome1.getText()).getFigura().getX()+", y="+G.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+G.getVertice(nome1.getText()).getD()+"\nF: "+G.getVertice(nome1.getText()).getF()+"\nPredecessor: "+"null"+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nome: "+G.getVertice(nome1.getText()).getNome()+"\nCor: "+G.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+G.getVertice(nome1.getText()).getFigura().getX()+", y="+G.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+G.getVertice(nome1.getText()).getD()+"\nF: "+G.getVertice(nome1.getText()).getF()+"\nPredecessor: "+"null"+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
 					}
 					catch(NullPointerException ex2) {
-						JOptionPane.showMessageDialog(frameDeControle,"O componente inserido nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,"O componente inserido nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -904,14 +916,14 @@ public final class GUIGrafo extends GUI {
 					"Primeiro componente:", nome1,
 					"Segundo componente:", nome2
 			};		
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Ligacao (Especifica)", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog(null, message, "Ligacao (Especifica)", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try {
-					JOptionPane.showMessageDialog(frameDeControle, "Primeiro Componente: "+G.getVertice(nome1.getText()).getNome()+"\nSegundo Componente: "+G.getVertice(nome2.getText()).getNome()+"\nPeso: "+G.getAresta(nome1.getText(),nome2.getText()).getPeso(), "Ligacao Especifica", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Primeiro Componente: "+G.getVertice(nome1.getText()).getNome()+"\nSegundo Componente: "+G.getVertice(nome2.getText()).getNome()+"\nPeso: "+G.getAresta(nome1.getText(),nome2.getText()).getPeso(), "Ligacao Especifica", JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(NullPointerException ex){
 
-					JOptionPane.showMessageDialog(frameDeControle,"A Ligacao inserida nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"A Ligacao inserida nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
@@ -927,7 +939,7 @@ public final class GUIGrafo extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			JOptionPane.showMessageDialog(frameDeControle, "Componentes: "+G.getInfoVertices()+ "\nQuantidade: "+ G.getV().size() ,"Conjunto de Componente", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Componentes: "+G.getInfoVertices()+ "\nQuantidade: "+ G.getV().size() ,"Conjunto de Componente", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -941,7 +953,7 @@ public final class GUIGrafo extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			JOptionPane.showMessageDialog(frameDeControle,"Ligacoes: " + G.getInfoArestas() + "\nQuantidade: " + G.getE().size()  ,"Conjunto de Ligacoes", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Ligacoes: " + G.getInfoArestas() + "\nQuantidade: " + G.getE().size()  ,"Conjunto de Ligacoes", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -954,7 +966,7 @@ public final class GUIGrafo extends GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(frameDeControle, "Nao foi possivel verificar novas atualizacoes.","Ops! :(", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Nao foi possivel verificar novas atualizacoes.","Ops! :(", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -967,7 +979,7 @@ public final class GUIGrafo extends GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(frameDeControle, "Desenvolvido por: \n\nThiago Mendes Ripardo Aguiar.\n\n","Sobre", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Desenvolvido por: \n\nThiago Mendes Ripardo Aguiar.\n\n","Sobre", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

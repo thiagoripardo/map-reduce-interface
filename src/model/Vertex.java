@@ -9,69 +9,70 @@ import java.io.Serializable;
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class Vertice implements Serializable {
+public class Vertex implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer d, f;
 	private String nome, cor;
-	private Vertice pi;
+	private Vertex pi;
 	private int x, y;
-	FiguraVertice v = null;
-	
-	/**
-	 * Construtor Vertice
-	 * @since 1.0 
-	 */
-	public Vertice(){}
+	VertexPicture v = null;
+	Component comp = null;
 
 	/**
-	 * Construtor Vertice
+	 * Construtor Vertex
+	 * @since 1.0 
+	 */
+	public Vertex(){}
+
+	/**
+	 * Construtor Vertex
 	 * @param nome String
 	 * @since 1.0 
 	 */
-	public Vertice(String nome){
+	public Vertex(String nome){
 		this.setNome(nome);
-		this.v = new FiguraVertice(getNome(), 30, 30, getD(), getF());
+		this.v = new VertexPicture(getNome(), 30, 30, getD(), getF());
 	}
 	
 	/**
-	 * Construtor Vertice
+	 * Construtor Vertex
 	 * @param nome String
 	 * @param x int
 	 * @param y int
 	 * @since 1.0 
 	 */
-	public Vertice(String nome, int x, int y){
+	public Vertex(String nome, int x, int y){
 		this.setNome(nome);
 		this.setPonto(x, y);
-		this.v = new FiguraVertice(getNome(), x, y, getD(), getF());
+		this.v = new VertexPicture(getNome(), x, y, getD(), getF());
 	}
 	
 	/**
-	 * Construtor Vertice
+	 * Construtor Vertex
 	 * @param nome String
 	 * @param x int
 	 * @param y int
 	 * @param cor String
 	 * @since 1.0 
 	 */
-	public Vertice(String nome, int x, int y, String cor){
+	public Vertex(String nome, int x, int y, String cor){
 		this.setNome(nome);
 		this.setPonto(x, y);
 		this.setCor(cor);
-		this.v = new FiguraVertice(getNome(), x, y, getD(), getF());
+		this.v = new VertexPicture(getNome(), x, y, getD(), getF());
 	}
 
 	/**
-	 * Construtor Vertice
+	 * Construtor Vertex
 	 * @param nome String
 	 * @param cor String
 	 * @since 1.0 
 	 */
-	public Vertice(String nome, String cor){
+	public Vertex(String nome, String cor){
 		this.setNome(nome);
 		this.setCor(cor);
-		this.v = new FiguraVertice(getNome(), 30, 30, getD(), getF());
+		this.v = new VertexPicture(getNome(), 30, 30, getD(), getF());
 	}
 	
 	/**
@@ -81,7 +82,7 @@ public class Vertice implements Serializable {
 	 * @since 1.0 
 	 */
 	public void setFigura(int x, int y){
-		this.v = new FiguraVertice(getNome(), x, y, getD(), getF());
+		this.v = new VertexPicture(getNome(), x, y, getD(), getF());
 	}
 	
 	/**
@@ -151,20 +152,20 @@ public class Vertice implements Serializable {
 	
 	/**
 	 * Setar predecessor do vertice
-	 * @param pi model.Vertice
+	 * @param pi model.Vertex
 	 * @since 1.0 
 	 */
-	public void setPi(Vertice pi){
+	public void setPi(Vertex pi){
 		this.pi = pi;
 	}
 	
 	/**
 	 * Retornar figura associada ao vertice
-	 * @return v model.FiguraVertice
+	 * @return v model.VertexPicture
 	 * @throws NullPointerException
 	 * @since 1.0 
 	 */
-	public FiguraVertice getFigura() throws NullPointerException{
+	public VertexPicture getFigura() throws NullPointerException{
 		if(this.v == null) throw new NullPointerException("NULO");
 		else return this.v;
 	}
@@ -225,21 +226,30 @@ public class Vertice implements Serializable {
 
 	/**
 	 * Retornar predecessor do vertice
-	 * @return pi model.Vertice
+	 * @return pi model.Vertex
 	 * @throws NullPointerException
 	 * @since 1.0 
 	 */
-	public Vertice getPi() throws NullPointerException{
+	public Vertex getPi() throws NullPointerException{
 		if(this.pi == null) throw new NullPointerException("NULO");
 		else return this.pi;
 	}
 	
+	public Component getComp() throws NullPointerException{
+		if(this.comp == null) throw new NullPointerException("NULO");
+		else return this.comp;
+	}
+	
+	public void setComp(Component comp) {
+		this.comp = comp;
+	}
+	
 	/**
 	 * Compara dois vertices para saber se sao iguais
-	 * @param u model.Vertice
+	 * @param u model.Vertex
 	 * @since 1.0 
 	 */
-	public boolean equals(Vertice u){
+	public boolean equals(Vertex u){
 		
 		if((this.nome.equals(u.getNome())))	
 			return true;
