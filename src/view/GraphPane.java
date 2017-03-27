@@ -26,7 +26,7 @@ import model.Vertex;
 public class GraphPane extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	private final int DELAY = 5;
+	private final int DELAY = 20;
 	private Timer timer;
 	private Graph G = null;
 
@@ -132,7 +132,7 @@ public class GraphPane extends JPanel implements ActionListener {
 		Vertex v = null;
 		while (iter2.hasNext()){
 			v = iter2.next();
-			if(v.getFigura().areaVertice){
+			if(v.getFigura().componentArea){
 				v.getFigura().move();
 				repaint();
 				break;

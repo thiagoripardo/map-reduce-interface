@@ -24,7 +24,7 @@ public final class GUIGrafo extends GUI {
 	//private GUI frameDeControle;
 	private Graph G = new Graph(true);
 	private GControl gc = new GControl(this, G);
-	private final GraphPane pane2 = new GraphPane(G);
+	private final GraphPane dropPane = new GraphPane(G);
 	
 	/**
 	 * Construtor da classe GUIGrafo
@@ -43,9 +43,10 @@ public final class GUIGrafo extends GUI {
 	public void iniciar(){
 		
 		// Instanciar Paineis
-		JPanel pane = new JPanel(new BorderLayout());
-		//gc.setQuadro(pane2);
-		pane.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		//JSplitPane pane = new JSplitPane(new BorderLayout());
+//		JSplitPane pane = new JSplitPane();
+//		//gc.setQuadro(dropPane);
+//		pane.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 
 		// Icone da GUIGrafo(frame)
 		Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/graph.png"));  
@@ -216,8 +217,6 @@ public final class GUIGrafo extends GUI {
 		itemSair.addActionListener(new HandlerSair());
 		menuArquivo.add(itemSair);
 
-		// Menu Editar
-
 		// Direcionado
 		//itemDirecionado.setMnemonic(KeyEvent.VK_C);
 		itemDirecionado.setSelected(true);
@@ -252,8 +251,6 @@ public final class GUIGrafo extends GUI {
 		itemArestaI.addActionListener(new HandlerAddAresta());
 
 		menuInserir.add(itemArestaI);
-
-		//menuRemover.setMnemonic(KeyEvent.VK_W);
 
 		// Remover Vertex
 		itemVerticeR.setMnemonic(KeyEvent.VK_W);
@@ -294,13 +291,6 @@ public final class GUIGrafo extends GUI {
 		// Busca em Profundidade
 		itemBuscaP.addActionListener(new HandlerBuscaEmProfundidade());
 		menuExecutar.add(itemBuscaP);
-
-		// Bellman_Ford
-		//itemBF.addActionListener(new HandlerBellman_Ford());
-		//menuExecutar.add(itemBF);
-
-		// Menu Informacoes
-		//menuInfo.setMnemonic(KeyEvent.VK_W);
 
 		// Menu Geral
 		//itemGeral.setMnemonic(KeyEvent.VK_C);
@@ -355,24 +345,37 @@ public final class GUIGrafo extends GUI {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Timer timer = pane2.getTimer();
+				Timer timer = dropPane.getTimer();
 				timer.stop();
 			}
 		});
 		setJMenuBar(menuBar);
 		toolBar.setBackground(new Color(220,220,220));
 		toolBar.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-		pane2.setBackground(new Color(220,220,220));
-		pane2.setBorder(BorderFactory.createTitledBorder(
-				"Clique e arraste para mover os componentes"));
-		pane2.setToolTipText("teste");
-		JPanel pane3 = new JPanel(new BorderLayout());
-		//pane3.setBorder(BorderFactory.createTitledBorder("Clique e arraste para mover os componentes"));
-		//pane.add(pane3, BorderLayout.WEST);
-		pane.add(toolBar, BorderLayout.PAGE_START);
-		pane.add(pane2, BorderLayout.CENTER);
 		
-		setContentPane(pane);
+		JScrollPane dragPane = new JScrollPane();
+		//Dimension minimumSize = new Dimension(200, 50);
+        //dragPane.setMinimumSize(minimumSize);
+        dragPane.setBorder(BorderFactory.createTitledBorder(
+				"Arraste daqui"));
+        
+		dropPane.setBackground(new Color(220,220,220));
+		dropPane.setBorder(BorderFactory.createTitledBorder(
+				"Solte aqui"));
+		dropPane.setToolTipText("teste");
+		
+		JPanel geralPane = new JPanel(new BorderLayout());
+		
+		JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                dragPane, dropPane);
+		pane.setOneTouchExpandable(true);
+        pane.setDividerLocation(200);
+        
+		geralPane.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		geralPane.add(toolBar, BorderLayout.PAGE_START);
+		geralPane.add(pane, BorderLayout.CENTER);
+		
+		setContentPane(geralPane);
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
 //		setResizable(true);
@@ -403,13 +406,13 @@ public final class GUIGrafo extends GUI {
 				(new GraphWriter(G)).iniciar();
 				setGrafo(new Graph());
 				gc.setGrafo(G);
-				pane2.setGrafo(G);
+				dropPane.setGrafo(G);
 				repaint();
 			}
 			if(option == JOptionPane.NO_OPTION){
 				setGrafo(new Graph());
 				gc.setGrafo(G);
-				pane2.setGrafo(G);
+				dropPane.setGrafo(G);
 				repaint();
 			}
 		}
@@ -427,7 +430,7 @@ public final class GUIGrafo extends GUI {
 				GraphReader ag = new GraphReader();
 				setGrafo(ag.iniciar());
 				gc.setGrafo(G);
-				pane2.setGrafo(G);
+				dropPane.setGrafo(G);
 				repaint();
 			}
 			catch(NullPointerException ex){}
@@ -756,7 +759,7 @@ public final class GUIGrafo extends GUI {
 			if(option == JOptionPane.YES_OPTION){
 				setGrafo(new Graph());
 				gc.setGrafo(G);
-				pane2.setGrafo(G);
+				dropPane.setGrafo(G);
 				repaint();
 				gc.gerarAleatorio();
 				repaint();

@@ -22,7 +22,7 @@ public class VertexPicture implements Serializable {
 	 * Atributos
 	 * Posicao x e y da imagem
 	 * Posicao dx e dy (tempo real) da imagem
-	 * Area do vertice areaVertice
+	 * Area do vertice componentArea
 	 * @since 1.0
 	 */
 	private static final long serialVersionUID = 1L;
@@ -30,7 +30,8 @@ public class VertexPicture implements Serializable {
 	int dx,dy; 
 	Integer nomeD, nomeF;
 	String nomeVertice, cor="dgray";
-	public boolean areaVertice;
+	public boolean componentArea;
+	public boolean portArea;
 
 	/**
 	 * Construtor VertexPicture
@@ -105,15 +106,15 @@ public class VertexPicture implements Serializable {
 		if(getCor().equals("Preto"))
         	g2d.setPaint(Color.black);
 		if(getCor().equals("Source"))
-        	g2d.setPaint(Color.red);
+        	g2d.setPaint(Color.green);
 		if(getCor().equals("Mapper"))
-        	g2d.setPaint(Color.blue);
+        	g2d.setPaint(Color.red);
 		if(getCor().equals("Reducer"))
-        	g2d.setPaint(Color.gray);
+        	g2d.setPaint(Color.blue);
 		if(getCor().equals("Splitter"))
         	g2d.setPaint(Color.yellow);
 		if(getCor().equals("Shuffler"))
-        	g2d.setPaint(Color.black);
+        	g2d.setPaint(Color.gray);
 		if(getCor().equals("Result"))
         	g2d.setPaint(Color.green);
 		
@@ -123,7 +124,7 @@ public class VertexPicture implements Serializable {
 		//g2d.fillOval(getX(),getY(),50,50);
 		g2d.fillRect(getX(), getY(), 75, 50);
 		g2d.setPaint(Color.black);
-		Ellipse2D.Double circle = new Ellipse2D.Double(getX(),getY(),50,50);
+		//Ellipse2D.Double circle = new Ellipse2D.Double(getX(),getY(),50,50);
 		//g2d.fillOval(getX(),getY(),50,50);
 		
 		g2d.draw(new Arc2D.Double(getX() -35, getY() +12.5, 25, 25, 90, -180, Arc2D.OPEN));
@@ -183,10 +184,10 @@ public class VertexPicture implements Serializable {
 	public void mousePressed(MouseEvent e){
 
 		if(e.getX()>= x && e.getY() >= y && e.getX() <= (x+75) && e.getY() <= (y+50)){
-			areaVertice = true;
+			componentArea = true;
 		}
 		else{
-			areaVertice = false;
+			componentArea = false;
 		}
 
 	}
