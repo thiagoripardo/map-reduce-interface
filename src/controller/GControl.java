@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import view.GUI;
-import view.GUIGrafo;
+import view.GUIGraph;
 import view.GraphPane;
 import model.*;
 
@@ -33,7 +33,7 @@ public class GControl {
 	 * @param G
 	 * @since 1.0 
 	 */
-	public GControl(GUIGrafo frameDeControle, Graph G){
+	public GControl(GUIGraph frameDeControle, Graph G){
 		this.G = G;
 		this.frameDeControle = frameDeControle;
 	}

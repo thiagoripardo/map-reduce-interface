@@ -6,6 +6,7 @@ import model.Graph;
 import readerwriter.GraphReader;
 import readerwriter.GraphWriter;
 import controller.*;
+import handlers.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -18,7 +19,7 @@ import java.awt.event.*;
  * @version 1.0
  */
 
-public final class GUIGrafo extends GUI {
+public final class GUIGraph extends GUI {
 
 	private static final long serialVersionUID = 1L;
 	//private GUI frameDeControle;
@@ -27,10 +28,10 @@ public final class GUIGrafo extends GUI {
 	private final GraphPane dropPane = new GraphPane(G);
 	
 	/**
-	 * Construtor da classe GUIGrafo
+	 * Construtor da classe GUIGraph
 	 */
 	
-	public GUIGrafo(){
+	public GUIGraph(){
 
 		super("MapReduceInterface");
 		iniciar();
@@ -41,14 +42,8 @@ public final class GUIGrafo extends GUI {
 	 */
 	
 	public void iniciar(){
-		
-		// Instanciar Paineis
-		//JSplitPane pane = new JSplitPane(new BorderLayout());
-//		JSplitPane pane = new JSplitPane();
-//		//gc.setQuadro(dropPane);
-//		pane.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 
-		// Icone da GUIGrafo(frame)
+		// Icone da GUIGraph(frame)
 		Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/graph.png"));  
 		this.setIconImage(imagemTitulo);
 
@@ -353,8 +348,8 @@ public final class GUIGrafo extends GUI {
 		toolBar.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 		
 		JScrollPane dragPane = new JScrollPane();
-		//Dimension minimumSize = new Dimension(200, 50);
-        //dragPane.setMinimumSize(minimumSize);
+		//dragPane.setTransferHandler(new FromTransferHandler());
+		
         dragPane.setBorder(BorderFactory.createTitledBorder(
 				"Arraste daqui"));
         

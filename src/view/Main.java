@@ -22,7 +22,7 @@ public class Main {
 			java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
 
-		final GUI frame = new GUIGrafo();
+		final GUI frame = new GUIGraph();
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
