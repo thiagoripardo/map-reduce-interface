@@ -1,4 +1,4 @@
-package map_reduce_example;
+package mapreduce.components;
 
 import model.Component;
 

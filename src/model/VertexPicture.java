@@ -97,52 +97,109 @@ public class VertexPicture implements Serializable {
 		rh.put(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHints(rh);
 		
-		if(getCor().equals("dgray"))
+		if(getCor().equals("dgray")){
         	g2d.setPaint(Color.DARK_GRAY);
-		if(getCor().equals("Branco"))
+		}
+		else if(getCor().equals("Branco")){
         	g2d.setPaint(Color.white);
-		if(getCor().equals("Cinza"))
+		}
+		else if(getCor().equals("Cinza")){
         	g2d.setPaint(Color.gray);
-		if(getCor().equals("Preto"))
+		}
+		else if(getCor().equals("Preto")){
         	g2d.setPaint(Color.black);
-		if(getCor().equals("Source"))
+		}
+		else if(getCor().equals("DataSource")){
         	g2d.setPaint(Color.green);
-		if(getCor().equals("Mapper"))
+        	drawDataSourceComponent(g, g2d);
+		}
+		else if(getCor().equals("Mapper")){
         	g2d.setPaint(Color.red);
-		if(getCor().equals("Reducer"))
+        	drawStandardComponent(g, g2d);
+		}
+		else if(getCor().equals("Reducer")){
         	g2d.setPaint(Color.blue);
-		if(getCor().equals("Splitter"))
+        	drawStandardComponent(g, g2d);
+		}
+		else if(getCor().equals("Splitter")){
         	g2d.setPaint(Color.yellow);
-		if(getCor().equals("Shuffler"))
+        	drawStandardComponent(g, g2d);
+		}
+		else if(getCor().equals("Shuffler")){
         	g2d.setPaint(Color.gray);
-		if(getCor().equals("Result"))
-        	g2d.setPaint(Color.green);
+        	drawStandardComponent(g, g2d);
+		}
+		else if(getCor().equals("DataSink")){
+			g2d.setPaint(Color.green);
+			drawDataSinkComponent(g, g2d);
+		}
+		else if(getCor().equals("sp2")){
+			g2d.setPaint(Color.yellow);
+			splitter(g, g2d);
+		}
 		
-		
-		
+		Toolkit.getDefaultToolkit().sync();
+    }
+	
+	public void drawStandardComponent(Graphics g, Graphics2D g2d){
 		//cria a figura
 		//g2d.fillOval(getX(),getY(),50,50);
 		g2d.fillRect(getX(), getY(), 75, 50);
 		g2d.setPaint(Color.black);
 		//Ellipse2D.Double circle = new Ellipse2D.Double(getX(),getY(),50,50);
 		//g2d.fillOval(getX(),getY(),50,50);
-		
+				
 		g2d.draw(new Arc2D.Double(getX() -35, getY() +12.5, 25, 25, 90, -180, Arc2D.OPEN));
 		g.drawLine(getX() -10, getY() +25, getX(), getY() +25);
 		g.drawLine(getX() +75, getY() +25, getX() +85, getY() +25);
 		g2d.fillOval(getX() +85, getY() +15, 20, 20);
 		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
-		
-//		if(getCor().equals("Preto"))
-//			g2d.setPaint(Color.white);
-//		if ((this.nomeD != null)||(this.nomeF != null)){
-//			if((this.nomeD != null)&&(this.nomeF == null))
-//				g2d.drawString(Integer.toString(this.nomeD), getX()+22,getY()+28);
-//			if((this.nomeD != null)&&(this.nomeF != null))
-//				g2d.drawString(Integer.toString(this.nomeD)+"/"+Integer.toString(this.nomeF), getX()+13,getY()+28);
-//		}
-		Toolkit.getDefaultToolkit().sync();
-    }
+	}
+	
+	public void drawDataSourceComponent(Graphics g, Graphics2D g2d){
+		//cria a figura
+		//g2d.fillOval(getX(),getY(),50,50);
+		g2d.fillRect(getX(), getY(), 75, 50);
+		g2d.setPaint(Color.black);
+		//Ellipse2D.Double circle = new Ellipse2D.Double(getX(),getY(),50,50);
+		//g2d.fillOval(getX(),getY(),50,50);
+				
+		//g2d.draw(new Arc2D.Double(getX() -35, getY() +12.5, 25, 25, 90, -180, Arc2D.OPEN));
+		//g.drawLine(getX() -10, getY() +25, getX(), getY() +25);
+		g.drawLine(getX() +75, getY() +25, getX() +85, getY() +25);
+		g2d.fillOval(getX() +85, getY() +15, 20, 20);
+		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
+	}
+	
+	public void drawDataSinkComponent(Graphics g, Graphics2D g2d){
+		//cria a figura
+		//g2d.fillOval(getX(),getY(),50,50);
+		g2d.fillRect(getX(), getY(), 75, 50);
+		g2d.setPaint(Color.black);
+		//Ellipse2D.Double circle = new Ellipse2D.Double(getX(),getY(),50,50);
+		//g2d.fillOval(getX(),getY(),50,50);
+				
+		//g2d.draw(new Arc2D.Double(getX() -35, getY() +12.5, 25, 25, 90, -180, Arc2D.OPEN));
+		//g.drawLine(getX() -10, getY() +25, getX(), getY() +25);
+		g.drawLine(getX() +38, getY(), getX() +38, getY() -50);
+		g2d.fillOval(getX() +28, getY() -50, 20, 20);
+		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
+	}
+	
+	public void splitter(Graphics g, Graphics2D g2d){
+		g2d.fillRect(getX(), getY(), 75, 50);
+		g2d.setPaint(Color.black);
+		//Ellipse2D.Double circle = new Ellipse2D.Double(getX(),getY(),50,50);
+		//g2d.fillOval(getX(),getY(),50,50);
+				
+		g2d.draw(new Arc2D.Double(getX() -35, getY() +12.5, 25, 25, 90, -180, Arc2D.OPEN));
+		g2d.draw(new Arc2D.Double(getX() +25, getY() +75, 25, 25, 180, -180, Arc2D.OPEN));
+		g.drawLine(getX() -10, getY() +25, getX(), getY() +25);
+		g.drawLine(getX() +75, getY() +25, getX() +85, getY() +25);
+		g.drawLine(getX() +38, getY() +50, getX() +38, getY() +75);
+		g2d.fillOval(getX() +85, getY() +15, 20, 20);
+		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
+	}
 	
 	/**
 	 * Metodo que cria um MouseMotionListener para clicar e arrastar imagem

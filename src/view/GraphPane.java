@@ -2,19 +2,16 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
-import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Iterator;
 import javax.swing.Timer;
+import controller.GControl;
 import model.Edge;
-import model.Graph;
 import model.Vertex;
 
 /**
@@ -23,12 +20,12 @@ import model.Vertex;
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class GraphPane extends JPanel implements ActionListener {
+public class GraphPane extends JPanel implements ActionListener, Observer {
 
 	private static final long serialVersionUID = 1L;
 	private final int DELAY = 20;
 	private Timer timer;
-	private Graph G = null;
+	private GControl gc = null;
 
 	/**
 	 * Construtor da classe GraphPane
@@ -36,11 +33,11 @@ public class GraphPane extends JPanel implements ActionListener {
 	 * @param G Graph
 	 */
 	
-	public GraphPane(Graph G) {
+	public GraphPane(GControl gc) {
 
 		super(new BorderLayout());
 		//super.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		this.G = G;
+		this.gc = gc;
 
 		addMouseMotionListener(new MMAdapter());
 		addMouseListener(new 
@@ -75,8 +72,8 @@ public class GraphPane extends JPanel implements ActionListener {
 		return timer;
 	}
 
-	public void setGrafo(Graph G){
-		this.G = G;
+	public void setGrafo(GControl gc){
+		this.gc = gc;
 	}
 	
 	/**
@@ -90,8 +87,8 @@ public class GraphPane extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
-		if(G.getDir()){
-			Iterator<Edge> iter = G.getE().iterator();
+		if(gc.getGrafo().getDir()){
+			Iterator<Edge> iter = gc.getGrafo().getE().iterator();
 			Edge e = null;
 			while (iter.hasNext()){
 				e = iter.next();
@@ -102,7 +99,7 @@ public class GraphPane extends JPanel implements ActionListener {
 			}
 		}
 		else{
-			Iterator<Edge> iter = G.getE().iterator();
+			Iterator<Edge> iter = gc.getGrafo().getE().iterator();
 			Edge e = null;
 			while (iter.hasNext()){
 				e = iter.next();
@@ -113,7 +110,7 @@ public class GraphPane extends JPanel implements ActionListener {
 			}
 		}
 
-		Iterator<Vertex> iter2 = G.getV().iterator();
+		Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 		while (iter2.hasNext())
 			iter2.next().getFigura().desenhandoComponente(g);
 	}
@@ -128,7 +125,7 @@ public class GraphPane extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Iterator<Vertex> iter2 = G.getV().iterator();
+		Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 		Vertex v = null;
 		while (iter2.hasNext()){
 			v = iter2.next();
@@ -157,7 +154,7 @@ public class GraphPane extends JPanel implements ActionListener {
 		 */
 		public void mouseDragged(MouseEvent e){
 
-			Iterator<Vertex> iter2 = G.getV().iterator();
+			Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 
 			while (iter2.hasNext()){
 				iter2.next().getFigura().mouseDragged(e);
@@ -182,7 +179,7 @@ public class GraphPane extends JPanel implements ActionListener {
 		 * @since 1.0
 		 */
 		public void mouseReleased(MouseEvent e){
-			Iterator<Vertex> iter2 = G.getV().iterator();
+			Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 
 			while (iter2.hasNext()){
 				iter2.next().getFigura().mouseReleased(e);
@@ -195,12 +192,17 @@ public class GraphPane extends JPanel implements ActionListener {
 		 * @since 1.0
 		 */
 		public void mousePressed(MouseEvent e){
-			Iterator<Vertex> iter2 = G.getV().iterator();
+			Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 
 			while (iter2.hasNext()){
 				iter2.next().getFigura().mousePressed(e);
 			}
 		}
 
+	}
+
+	@Override
+	public void update() {
+		repaint();
 	}
 }

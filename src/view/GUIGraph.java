@@ -6,9 +6,11 @@ import model.Graph;
 import readerwriter.GraphReader;
 import readerwriter.GraphWriter;
 import controller.*;
-import handlers.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 /**
@@ -23,9 +25,9 @@ public final class GUIGraph extends GUI {
 
 	private static final long serialVersionUID = 1L;
 	//private GUI frameDeControle;
-	private Graph G = new Graph(true);
-	private GControl gc = new GControl(this, G);
-	private final GraphPane dropPane = new GraphPane(G);
+	private Graph g = new Graph(true);
+	private GControl gc = new GControl(g);
+	private final GraphPane dropPane = new GraphPane(gc);
 	
 	/**
 	 * Construtor da classe GUIGraph
@@ -107,6 +109,9 @@ public final class GUIGraph extends GUI {
 
 		ImageIcon gale = new ImageIcon(this.getClass().getResource("images/executar/script_go.png"));
 		JMenuItem itemGerarAle = new JMenuItem("Gerar Aleatorio", gale);
+		
+		ImageIcon exec = new ImageIcon(this.getClass().getResource("images/executar/play.png"));
+		JMenuItem itemExec = new JMenuItem("Executar", exec);
 
 		ImageIcon bl = new ImageIcon(this.getClass().getResource("images/executar/zoom.png"));
 		JMenuItem itemBuscaL = new JMenuItem("Busca em Largura", bl);
@@ -180,6 +185,12 @@ public final class GUIGraph extends GUI {
 		proA.setIcon(aesp);
 		proA.setOpaque(false);
 		proA.addActionListener(new HandlerArestaEsp());
+		
+		// Botao procurar aresta
+		JButton execMP = new JButton();
+		execMP.setIcon(exec);
+		execMP.setOpaque(false);
+		execMP.addActionListener(new HandlerAbrirTexto());
 
 		toolBar.add(vert);
 		toolBar.add(addV);
@@ -190,6 +201,8 @@ public final class GUIGraph extends GUI {
 		toolBar.add(addA);
 		toolBar.add(remA);
 		toolBar.add(proA);
+		toolBar.addSeparator();
+		toolBar.add(execMP);
 
 		// Secao de adicionar aos Menus: MenuItens ou outros Menus. Tambem tratamos eventos aqui.
 		// Menu Arquivo
@@ -214,21 +227,21 @@ public final class GUIGraph extends GUI {
 
 		// Direcionado
 		//itemDirecionado.setMnemonic(KeyEvent.VK_C);
-		itemDirecionado.setSelected(true);
-		itemDirecionado.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-
-				if(itemDirecionado.isSelected()){
-					gc.addDir(true);
-					JOptionPane.showMessageDialog(null,"O Graph agora é direcionado.","Direcao do Graph",JOptionPane.INFORMATION_MESSAGE);
-				}
-				else{
-					gc.addDir(false);
-					JOptionPane.showMessageDialog(null,"O Graph agora não é direcionado.","Direcaoo do Graph",JOptionPane.INFORMATION_MESSAGE);
-				}
-				repaint();
-			}
-		});
+//		itemDirecionado.setSelected(true);
+//		itemDirecionado.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//
+//				if(itemDirecionado.isSelected()){
+//					gc.addDir(true);
+//					JOptionPane.showMessageDialog(null,"O Graph agora é direcionado.","Direcao do Graph",JOptionPane.INFORMATION_MESSAGE);
+//				}
+//				else{
+//					gc.addDir(false);
+//					JOptionPane.showMessageDialog(null,"O Graph agora não é direcionado.","Direcaoo do Graph",JOptionPane.INFORMATION_MESSAGE);
+//				}
+//				repaint();
+//			}
+//		});
 
 		// Ajustar
 		itemAjustar.addActionListener(new HandlerAjustar());
@@ -259,7 +272,7 @@ public final class GUIGraph extends GUI {
 		menuRemover.add(itemArestaR);
 
 		//menuEditar.setMnemonic(KeyEvent.VK_W);
-		menuEditar.add(itemDirecionado);
+		//menuEditar.add(itemDirecionado);
 		menuEditar.addSeparator();
 		menuEditar.add(itemAjustar);
 		menuEditar.add(itemAgrupar);
@@ -268,23 +281,15 @@ public final class GUIGraph extends GUI {
 		menuEditar.add(menuRemover);
 
 		// Menu Executar
-		//menuExecutar.setMnemonic(KeyEvent.VK_W);
-
-		itemResetar.addActionListener(new HandlerResetar());
-		menuExecutar.add(itemResetar);
-
+		
+		// Executar
+		menuExecutar.add(itemExec);
+		menuExecutar.addSeparator();
+		
 		// Gerar Aleatorio
 		itemGerarAle.addActionListener(new HandlerGerarAleatorio());
 		menuExecutar.add(itemGerarAle);
 		menuExecutar.addSeparator();
-
-		// Busca em Largura
-		itemBuscaL.addActionListener(new HandlerBuscaEmLargura());
-		menuExecutar.add(itemBuscaL);
-
-		// Busca em Profundidade
-		itemBuscaP.addActionListener(new HandlerBuscaEmProfundidade());
-		menuExecutar.add(itemBuscaP);
 
 		// Menu Geral
 		//itemGeral.setMnemonic(KeyEvent.VK_C);
@@ -355,19 +360,18 @@ public final class GUIGraph extends GUI {
         
 		dropPane.setBackground(new Color(220,220,220));
 		dropPane.setBorder(BorderFactory.createTitledBorder(
-				"Solte aqui"));
+				"Clique e arraste para mover componentes e ligações"));
 		dropPane.setToolTipText("teste");
 		
 		JPanel geralPane = new JPanel(new BorderLayout());
 		
-		JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                dragPane, dropPane);
-		pane.setOneTouchExpandable(true);
-        pane.setDividerLocation(200);
+//		JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, dragPane, dropPane);
+//		pane.setOneTouchExpandable(true);
+//        pane.setDividerLocation(200);
         
 		geralPane.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 		geralPane.add(toolBar, BorderLayout.PAGE_START);
-		geralPane.add(pane, BorderLayout.CENTER);
+		geralPane.add(dropPane, BorderLayout.CENTER);
 		
 		setContentPane(geralPane);
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -382,7 +386,7 @@ public final class GUIGraph extends GUI {
 	 * @since 1.0 
 	 */
 	public void setGrafo(Graph G){
-		this.G = G;
+		this.g = G;
 	}
 	
 	
@@ -397,16 +401,16 @@ public final class GUIGraph extends GUI {
 			Object[] message = {"Esta ação apagará todo o conteudo do Graph.\nDeseja salvá-lo antes de cotinuar?"};
 			int option = JOptionPane.showOptionDialog(null, message, "Novo Graph", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Não","Cancelar"}, "Sim");
 			if(option == JOptionPane.YES_OPTION){
-				(new GraphWriter(G)).iniciar();
+				(new GraphWriter(g)).iniciar();
 				setGrafo(new Graph());
-				gc.setGrafo(G);
-				dropPane.setGrafo(G);
+				gc.setGrafo(g);
+				dropPane.setGrafo(gc);
 				repaint();
 			}
 			if(option == JOptionPane.NO_OPTION){
 				setGrafo(new Graph());
-				gc.setGrafo(G);
-				dropPane.setGrafo(G);
+				gc.setGrafo(g);
+				dropPane.setGrafo(gc);
 				repaint();
 			}
 		}
@@ -423,8 +427,8 @@ public final class GUIGraph extends GUI {
 			try{
 				GraphReader ag = new GraphReader();
 				setGrafo(ag.iniciar());
-				gc.setGrafo(G);
-				dropPane.setGrafo(G);
+				gc.setGrafo(g);
+				dropPane.setGrafo(gc);
 				repaint();
 			}
 			catch(NullPointerException ex){}
@@ -440,7 +444,7 @@ public final class GUIGraph extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			(new GraphWriter(G)).iniciar();
+			(new GraphWriter(g)).iniciar();
 		}
 	}
 
@@ -532,26 +536,12 @@ public final class GUIGraph extends GUI {
 	private class HandlerAddVertice implements ActionListener{
 
 		@Override
-		/*public void actionPerformed(ActionEvent e) {
-
-			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do vertice:","Inserir Vertex", JOptionPane.QUESTION_MESSAGE);
-			try{
-				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(null,"\nUm vertice nao pode ser nulo, certo?\n\nInsira (novamente) o nome do vertice:","Que feio! :/",JOptionPane.QUESTION_MESSAGE);
-				int x=0 , y=0;
-				gc.addVertice(inputValue, x, y);
-				repaint();
-			}
-			catch(NullPointerException ex){}
-		}*/
-		
-
 		public void actionPerformed(ActionEvent e) {
 			JTextField nome = new JTextField();
 			JTextField nome1 = new JTextField();
 			JTextField nome2 = new JTextField();
-			String[] titles = new String[] {"Source", "Mapper", "Splitter",
-                    "Shuffler", "Reducer", "Result"};
+			String[] titles = new String[] {"DataSource", "Mapper", "Splitter",
+                    "Shuffler", "Reducer", "DataSink", "sp2"};
 
 			JComboBox<String> types = new JComboBox<>(titles);
 			String t = "0";
@@ -612,7 +602,7 @@ public final class GUIGraph extends GUI {
 			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do componente:","Remover Componente", JOptionPane.QUESTION_MESSAGE);
 			try{
 				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(null,"\nUm componente nao pode ser nulo, certo?\n\nInsira o nome do vertice:","Que feio! :/",JOptionPane.QUESTION_MESSAGE);
+					inputValue = JOptionPane.showInputDialog(null,"\nUm componente nao pode ser nulo, certo?\n\nInsira o nome do componente:","Que feio! :/",JOptionPane.QUESTION_MESSAGE);
 				gc.removerVertice(inputValue);
 				repaint();
 			}
@@ -633,8 +623,7 @@ public final class GUIGraph extends GUI {
 		public void actionPerformed(ActionEvent e) {
 			JTextField nome1 = new JTextField();
 			JTextField nome2 = new JTextField();
-			//JTextField nome3 = new JTextField();
-
+			
 			Object[] message = {
 					"Primeiro componente:", nome1,
 					"Segundo componente:", nome2
@@ -645,44 +634,6 @@ public final class GUIGraph extends GUI {
 				repaint();
 			}
 
-
-			/*JTextField nome1 = new JTextField();
-			JTextField nome2 = new JTextField();
-			JTextField peso = new JTextField();
-			String t = "0";
-			Object[] message = {
-					"Primeiro vertice:", nome1,
-					"Segundo vertice:", nome2,
-					"Entre com o peso (Bellman-Ford, Djisktra)-(Opcional):", peso
-			};		
-
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Inserir Edge", JOptionPane.OK_CANCEL_OPTION);
-			if(option == JOptionPane.OK_OPTION){
-				try{
-					if(peso.getText().equals("")){
-						peso.setText(t);
-					}
-
-					while(peso.getText().equals("")){
-
-						option = JOptionPane.showConfirmDialog(frameDeControle, message,"Insira novamente! :/", JOptionPane.OK_CANCEL_OPTION);
-						if(peso.getText().equals("")){
-							peso.setText(t);
-						}
-						if(option == JOptionPane.CANCEL_OPTION){
-							break;
-						}	
-					}
-					if(option == JOptionPane.OK_OPTION){
-						gc.addAresta(nome1.getText(),nome2.getText(),Integer.parseInt(peso.getText()));
-					}
-
-					repaint();
-				}
-				catch(NumberFormatException ex) {
-					JOptionPane.showMessageDialog(frameDeControle, "O peso está incorreto. Tente novamente com pesos válidos","Ops! :(",JOptionPane.ERROR_MESSAGE);
-				}
-			}*/
 		}
 
 	}
@@ -725,21 +676,6 @@ public final class GUIGraph extends GUI {
 	}
 
 	/**
-	 * Classe privada que trata eventos do JMenuItem Resetar.
-	 * @version 1.0
-	 * @since 1.0 
-	 */
-	private class HandlerResetar implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			gc.resetarEstado();
-			JOptionPane.showMessageDialog(null, "Resetado com sucesso. O grafo voltou ao estado original","Resetar Graph", JOptionPane.INFORMATION_MESSAGE);
-			repaint();
-		}
-	}
-
-	/**
 	 * Classe privada que trata eventos do JMenuItem GerarAleatorio.
 	 * @version 1.0
 	 * @since 1.0 
@@ -752,100 +688,38 @@ public final class GUIGraph extends GUI {
 			int option = JOptionPane.showOptionDialog(null, message, "Graph Aleatório", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Nao"}, "Nao");
 			if(option == JOptionPane.YES_OPTION){
 				setGrafo(new Graph());
-				gc.setGrafo(G);
-				dropPane.setGrafo(G);
+				gc.setGrafo(g);
+				dropPane.setGrafo(gc);
 				repaint();
 				gc.gerarAleatorio();
 				repaint();
 			}
 		}
 	}
-
-	/**
-	 * Classe privada que trata eventos do JMenuItem BuscaEmLargura.
-	 * @version 1.0
-	 * @since 1.0 
-	 */
-	private final class HandlerBuscaEmLargura implements ActionListener{
+	
+	private class HandlerAbrirTexto implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			/*JTextField nome = new JTextField();
-			JTextField nome2 = new JTextField();
-
-			Object[] message = {
-					"Entre com o nome do vertice fonte:", nome,
-					"Entre com o tempo desejado das iterações (Em Segundos):", nome2
-			};
-
-			int option = JOptionPane.showConfirmDialog(frameDeControle, message, "Busca em Largura", JOptionPane.OK_CANCEL_OPTION);
-			if(option == JOptionPane.OK_OPTION){
-				//gc.BuscaEmLargura(nome.getText(), Integer.parseInt(nome2.getText()));
-				try{
-					//int i = Integer.parseInt(nome2.getText());
-					//gc.BuscaEmLargura(nome.getText());
-				}
-				catch(IllegalArgumentException ex) {
-					JOptionPane.showMessageDialog(frameDeControle,"O tempo está incorreto, tente novamente com um tempo válido.\n(SEGUNDO - INTEIRO)","Ops! :(",JOptionPane.ERROR_MESSAGE);
-				}
-			}*/
-
-			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do vertice fonte:","Busca em Largura", JOptionPane.QUESTION_MESSAGE);
-			try{
-				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(null,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Largura",JOptionPane.QUESTION_MESSAGE);
-				gc.buscaEmLargura(inputValue);
-				repaint();
+			BufferedReader br;
+			String total = "";
+			try {
+				br = new BufferedReader(new FileReader("/home/thiagoripardo/workspace/map-reduce-interface/src/dictionary.txt"));
+				String aLineFromFile = null;
+			    while ((aLineFromFile = br.readLine()) != null){
+			    	total = total +"\n"+ aLineFromFile;
+			    	
+			    }        
+			    //JOptionPane.showMessageDialog(null, total);
+			    JOptionPane.showMessageDialog(null, total,"Resultado", JOptionPane.INFORMATION_MESSAGE);
+			    br.close();
+			    return;
+			} catch (HeadlessException | IOException e1) {
+				e1.printStackTrace();
 			}
-			catch(NullPointerException ex){}
+		   
 		}
 	}
-
-	/**
-	 * Classe privada que trata eventos do JMenuItem BuscaEmProfundidade.
-	 * @version 1.0
-	 * @since 1.0 
-	 */
-	private class HandlerBuscaEmProfundidade implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			/*int option = JOptionPane.showConfirmDialog(frameDeControle, "Deseja executar a Busca em Profundidade?", "Busca em Largura", JOptionPane.OK_CANCEL_OPTION);
-			if(option == JOptionPane.OK_OPTION){
-				gc.BuscaEmProfundidade();
-				repaint();
-			}*/
-
-
-			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do vertice fonte:","Busca em Profundidade", JOptionPane.QUESTION_MESSAGE);
-			try{
-				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(null,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Profundidade",JOptionPane.QUESTION_MESSAGE);
-				gc.buscaEmProfundidade(inputValue);
-				repaint();
-			}
-			catch(NullPointerException ex){}
-		}
-	}
-
-	/*private class HandlerBellman_Ford implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			String inputValue = JOptionPane.showInputDialog(null,"Entre com o nome do vertice fonte:","Busca em Largura", JOptionPane.QUESTION_MESSAGE);
-			boolean a;
-			try{
-				while(inputValue.equals(""))
-					inputValue = JOptionPane.showInputDialog(null,"\nUm vertice nao pode ser nulo, certo?\n\nInsira o nome do vertice fonte:","Busca em Largura",JOptionPane.QUESTION_MESSAGE);
-				a = gc.bellman_ford(inputValue);
-				JOptionPane.showMessageDialog(frameDeControle, a,"Geral", JOptionPane.INFORMATION_MESSAGE);
-				repaint();
-			}
-			catch(NullPointerException ex){}
-		}
-	}*/
 
 	/**
 	 * Classe privada que trata eventos do JMenuItem Geral.
@@ -857,11 +731,11 @@ public final class GUIGraph extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String nome = null;
-			if(G.getDir())
+			if(g.getDir())
 				nome = "Direcionado.";
 			else
 				nome = "Não direcionado.";
-			JOptionPane.showMessageDialog(null, "Componentes:"+ G.getV().size()+ "\n Ligacoes:" +G.getE().size()+ "\n" +nome,"Geral", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Componentes:"+ g.getV().size()+ "\n Ligacoes:" +g.getE().size(),"Geral", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -882,12 +756,12 @@ public final class GUIGraph extends GUI {
 			int option = JOptionPane.showConfirmDialog(null, message, "Componente (Especifico)", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try {
-					String value = G.getVertice(nome1.getText()).getPi().getNome();
-					JOptionPane.showMessageDialog(null, "Nome: "+G.getVertice(nome1.getText()).getNome()+"\nCor: "+G.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+G.getVertice(nome1.getText()).getFigura().getX()+", y="+G.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+G.getVertice(nome1.getText()).getD()+"\nF: "+G.getVertice(nome1.getText()).getF()+"\nPredecessor: "+value+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
+					String value = g.getVertice(nome1.getText()).getPi().getNome();
+					JOptionPane.showMessageDialog(null, "Nome: "+g.getVertice(nome1.getText()).getNome()+"\nCor: "+g.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+g.getVertice(nome1.getText()).getFigura().getX()+", y="+g.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+g.getVertice(nome1.getText()).getD()+"\nF: "+g.getVertice(nome1.getText()).getF()+"\nPredecessor: "+value+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(NullPointerException ex){
 					try {
-						JOptionPane.showMessageDialog(null, "Nome: "+G.getVertice(nome1.getText()).getNome()+"\nCor: "+G.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+G.getVertice(nome1.getText()).getFigura().getX()+", y="+G.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+G.getVertice(nome1.getText()).getD()+"\nF: "+G.getVertice(nome1.getText()).getF()+"\nPredecessor: "+"null"+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nome: "+g.getVertice(nome1.getText()).getNome()+"\nCor: "+g.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+g.getVertice(nome1.getText()).getFigura().getX()+", y="+g.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+g.getVertice(nome1.getText()).getD()+"\nF: "+g.getVertice(nome1.getText()).getF()+"\nPredecessor: "+"null"+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
 					}
 					catch(NullPointerException ex2) {
 						JOptionPane.showMessageDialog(null,"O componente inserido nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
@@ -916,7 +790,7 @@ public final class GUIGraph extends GUI {
 			int option = JOptionPane.showConfirmDialog(null, message, "Ligacao (Especifica)", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try {
-					JOptionPane.showMessageDialog(null, "Primeiro Componente: "+G.getVertice(nome1.getText()).getNome()+"\nSegundo Componente: "+G.getVertice(nome2.getText()).getNome()+"\nPeso: "+G.getAresta(nome1.getText(),nome2.getText()).getPeso(), "Ligacao Especifica", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Primeiro Componente: "+g.getVertice(nome1.getText()).getNome()+"\nSegundo Componente: "+g.getVertice(nome2.getText()).getNome()+"\nPeso: "+g.getAresta(nome1.getText(),nome2.getText()).getPeso(), "Ligacao Especifica", JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(NullPointerException ex){
 
@@ -936,7 +810,7 @@ public final class GUIGraph extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			JOptionPane.showMessageDialog(null, "Componentes: "+G.getInfoVertices()+ "\nQuantidade: "+ G.getV().size() ,"Conjunto de Componente", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Componentes: "+g.getInfoVertices()+ "\nQuantidade: "+ g.getV().size() ,"Conjunto de Componente", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -950,7 +824,7 @@ public final class GUIGraph extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			JOptionPane.showMessageDialog(null,"Ligacoes: " + G.getInfoArestas() + "\nQuantidade: " + G.getE().size()  ,"Conjunto de Ligacoes", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Ligacoes: " + g.getInfoArestas() + "\nQuantidade: " + g.getE().size()  ,"Conjunto de Ligacoes", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

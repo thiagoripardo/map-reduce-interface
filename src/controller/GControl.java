@@ -1,13 +1,11 @@
 package controller;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
-
 import javax.swing.JOptionPane;
-
-import view.GUI;
-import view.GUIGraph;
-import view.GraphPane;
+import view.Observer;
 import model.*;
 
 /**
@@ -25,7 +23,7 @@ public class GControl {
 	 */
 	
 	private Graph G = null;
-	private  GUI frameDeControle;
+	private  List<Observer> observers = new LinkedList<Observer>();
 	//private GraphPane pane = null;
 
 	/**
@@ -33,9 +31,22 @@ public class GControl {
 	 * @param G
 	 * @since 1.0 
 	 */
-	public GControl(GUIGraph frameDeControle, Graph G){
+	public GControl(Graph G){
 		this.G = G;
-		this.frameDeControle = frameDeControle;
+	}
+	
+	public void attach(Observer observer){
+		observers.add(observer);
+	}
+	
+	public void deattach(Observer observer){
+		observers.remove(observer);
+	}
+	
+	public void notifyAllObservers(){
+		for(Observer observer : observers){
+			observer.update();
+		}
 	}
 
 	/**
@@ -65,7 +76,7 @@ public class GControl {
 		}
 		finally {
 			if(u!=null) 
-				JOptionPane.showMessageDialog(frameDeControle,"O vertice inserido ja existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"O componente inserido ja existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -91,7 +102,7 @@ public class GControl {
 		}
 		finally {
 			if(u!=null) 
-				JOptionPane.showMessageDialog(frameDeControle,"O vertice inserido ja existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"O componente inserido ja existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -143,7 +154,7 @@ public class GControl {
 				v = G.getVertice(nome2);
 			}
 			catch(NullPointerException ex2){
-				JOptionPane.showMessageDialog(frameDeControle,"Pelo menos um dos vertices inseridos nao existe, nao poderemos prosseguir. Tente novamente com vertices validos.","Ops! :(",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Pelo menos um dos componentes inseridos nao existe, nao poderemos prosseguir. Tente novamente com componentes validos.","Ops! :(",JOptionPane.ERROR_MESSAGE);
 			}
 			if((u!=null)&&(v!=null)){
 				G.getE().add(new Edge(u, v, peso));
@@ -152,7 +163,7 @@ public class GControl {
 		}
 		finally{
 			if(e!=null) 
-				JOptionPane.showMessageDialog(frameDeControle,"A aresta inserida ja existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"A ligacao inserida ja existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -180,7 +191,7 @@ public class GControl {
 			//JOptionPane.showMessageDialog(frameDeControle,"Vertex removido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 		}
 		catch(NullPointerException e){
-			JOptionPane.showMessageDialog(frameDeControle,"O vertice inserido nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"O componente inserido nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -201,7 +212,7 @@ public class GControl {
 
 		}
 		catch (NullPointerException ex){
-			JOptionPane.showMessageDialog(frameDeControle,"A aresta inserida nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"A aresta inserida nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -225,10 +236,12 @@ public class GControl {
 							u.setD(null); // O parametro null está sendo usado como infinito.
 							u.setPi(null);
 							atualizar(u);
+							dormir();
 						}
 						G.getVertice(s).setCor("Cinza");
 						G.getVertice(s).setD(0);
 						atualizar(G.getVertice(s));
+						dormir();
 						Queue<Vertex> f = new Queue<>();
 						f.add(G.getVertice(s));
 						while(f.isEmpty() == false){
@@ -252,12 +265,14 @@ public class GControl {
 											v.setD(u.getD() + 1);
 											v.setPi(u);
 											atualizar(v);
+											dormir();
 											f.add(v);
 										}
 									}
 								}
 								u.setCor("Preto");
 								atualizar(u);
+								dormir();
 							}
 							else {
 								Iterator<Edge> iter2 = G.getE().iterator();
@@ -276,18 +291,20 @@ public class GControl {
 											v.setD(u.getD() + 1);
 											v.setPi(u);
 											atualizar(v);
+											dormir();
 											f.add(v);
 										}
 									}
 								}
 								u.setCor("Preto");
 								atualizar(u);
+								dormir();
 							}
 						}
 					}
 				}
 				catch(NullPointerException e) {
-					JOptionPane.showMessageDialog(frameDeControle,"O vertice entrado nao existe. Tente novamente com um vertice valido.","Ops! :(",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"O vertice entrado nao existe. Tente novamente com um vertice valido.","Ops! :(",JOptionPane.ERROR_MESSAGE);
 				}
 			}  
 		}).start();
@@ -314,6 +331,7 @@ public class GControl {
 							u.setCor("Branco");
 							u.setPi(null);
 							atualizar(u);
+							dormir();
 						}
 						int tempo = 0;
 
@@ -327,11 +345,11 @@ public class GControl {
 						}
 					}
 					catch (NullPointerException ex){
-						JOptionPane.showMessageDialog(frameDeControle,"O vértice inserido não existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,"O vértice inserido não existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else{
-					JOptionPane.showMessageDialog(frameDeControle,"O Graph ainda nao contem um vertice, tente novamente apos inserir pelo menos um vertice","Ops! :(",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"O Graph ainda nao contem um vertice, tente novamente apos inserir pelo menos um vertice","Ops! :(",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}).start();
@@ -350,6 +368,7 @@ public class GControl {
 		u.setD(tempo);
 		u.setCor("Cinza");
 		atualizar(u);
+		dormir();
 		if(G.getDir() == false){
 			Iterator<Edge> iter = G.getE().iterator();
 			while (iter.hasNext()){
@@ -394,6 +413,7 @@ public class GControl {
 		tempo = tempo + 1;
 		u.setF(tempo);
 		atualizar(u);
+		dormir();
 		return tempo;
 	}
 
@@ -409,9 +429,8 @@ public class GControl {
 		u.getFigura().setCor(u.getCor());
 		u.getFigura().setD(u.getD());
 		u.getFigura().setF(u.getF());
-		//pane.repaint();
-		this.frameDeControle.repaint();
-		dormir();
+		notifyAllObservers();
+		
 	}
 
 	/**
@@ -464,7 +483,7 @@ public class GControl {
 			}
 		}
 		else{
-			//JOptionPane.showMessageDialog(frameDeControle,"Nao ha vertices para serem agrupados!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Nao ha componentes para serem agrupados!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -484,7 +503,7 @@ public class GControl {
 			u.getFigura().setY(y);
 		}
 		catch (NullPointerException ex){
-			JOptionPane.showMessageDialog(frameDeControle,"O vertice inserido não existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"O componente inserido não existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -531,100 +550,12 @@ public class GControl {
 	}
 
 	/**
-	 * Seta qual o view.GraphPane vai ser usado pela classe
-	 * @param pane model.Quadro
-	 * @deprecated
-	 * @since 1.0 
-	 */
-	public void setQuadro(GraphPane pane){
-		//this.pane = pane;
-	}
-
-	/**
 	 * Retorna o Graph que esta instanciado em GControl
-	 * @deprecated
 	 * @return G <code>model.Graph</code>
 	 * @since 1.0 
 	 */
 	public Graph getGrafo(){
 		return this.G;
 	}
-
-	/**
-	 * Instancia novo grafo
-	 * @deprecated
-	 * @since 1.0 
-	 */
-	public void novoGrafo(){
-		G = new Graph();
-	}
-
-	/**
-	 * Inicia todos os vertices com a cor branca, seu D nulo e seu predecessor nulo.
-	 * @deprecated
-	 * @param s model.Vertex
-	 * @since 1.0 
-	 */
-	public void iniciar_fonte_unica(Vertex s) {
-		resetarEstado();
-		Iterator<Vertex> iter = G.getV().iterator();
-		Vertex u = new Vertex();
-		while (iter.hasNext()){
-			u = iter.next();
-			u.setCor("white");
-			u.setD(null); // O parametro null está sendo usado como infinito.
-			u.setPi(null);
-			atualizar(u);
-		}
-		s.setD(0);
-		atualizar(u);
-	}
-
-	/**
-	 * Relaxar se o D de um vertice for maior que o D de seu predecessor + o peso da aresta.
-	 * @deprecated
-	 * @param s model.Edge
-	 * @since 1.0 
-	 */
-	public void relaxar(Edge s) {
-		if((s.getV().getD())>(s.getU().getD() + s.getPeso())){
-			s.getV().setD(s.getU().getD() + s.getPeso());
-			s.getV().setPi(s.getU());
-		}
-	}
-
-	/**
-	 * Algoritmo de Bellman_Ford
-	 * @deprecated
-	 * @param s String
-	 * @return <code>boolean</code> 
-	 * @since 1.0 
-	 */
-	public boolean bellman_ford(String s){
-		try{
-			iniciar_fonte_unica(G.getVertice(s));
-			Iterator<Vertex> iter = G.getV().iterator();
-			Iterator<Edge> iter1 = G.getE().iterator();
-			while (iter.hasNext()){
-				iter.next();
-				while (iter1.hasNext()){
-					relaxar(iter1.next());
-				}
-			}
-			Iterator<Edge> iter2 = G.getE().iterator();
-			Edge e = null;
-			while (iter2.hasNext()){
-				e = iter2.next();
-				if((e.getV().getD())>(e.getU().getD() + e.getPeso())){
-					return false;
-				}
-			}
-			return true;
-		}
-		catch (NullPointerException ex){
-			return false;
-			//JOptionPane.showMessageDialog(frameDeControle,"O vertice inserido não existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
-		}
-
-	}
+	
 }
