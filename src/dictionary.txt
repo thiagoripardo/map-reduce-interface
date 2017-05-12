@@ -1,7 +1,2 @@
-INFO mapreduce.Job: Job 3 
-completed successfully 
-29/03/17 20:02:54
-
-teste 3
-encontros 2
-interface 2
+INFO mapreduce Job
+------------------

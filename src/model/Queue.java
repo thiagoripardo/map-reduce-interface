@@ -9,10 +9,10 @@ import java.util.*;
  * @author Thiago Ripardo.
  * @version 1.0
  */
-public class Queue<No> implements Serializable {
+public class Queue<Node> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private LinkedList<No> f = new LinkedList<No>();
+	private LinkedList<Node> f = new LinkedList<Node>();
 	
 	public Queue() {}
 
@@ -27,20 +27,20 @@ public class Queue<No> implements Serializable {
 			return false;
 	}
 	
-	public No peek() {
+	public Node peek() {
 		if(isEmpty())
 			System.out.println("Queue Vazia");
 		return f.getFirst();
 	}
 	
-	public No remove() {
+	public Node remove() {
 		if(isEmpty())
 			System.out.println("Queue Vazia");
-		No r = f.removeFirst();
+		Node r = f.removeFirst();
 		return r;
 	}
 
-	public void add(No x) {
+	public void add(Node x) {
 		f.addLast(x);
 	}
 }

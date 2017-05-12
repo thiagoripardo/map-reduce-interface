@@ -19,6 +19,6 @@ public class JLabelVertex extends JLabel {
 
 	public void setVertex(Vertex v) {
 		this.vertex = v;
-		this.setText(this.vertex.getNome());
+		this.setText(this.vertex.getName());
 	}
 }

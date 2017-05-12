@@ -13,7 +13,7 @@ public class Vertex implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer d, f;
-	private String nome, cor;
+	private String name, color;
 	private Vertex pi;
 	private int x, y;
 	VertexPicture v = null;
@@ -27,52 +27,52 @@ public class Vertex implements Serializable {
 
 	/**
 	 * Construtor Vertex
-	 * @param nome String
+	 * @param name String
 	 * @since 1.0 
 	 */
-	public Vertex(String nome){
-		this.setNome(nome);
-		this.v = new VertexPicture(getNome(), 30, 30, getD(), getF());
+	public Vertex(String name){
+		this.setName(name);
+		this.v = new VertexPicture(getName(), 30, 30, getD(), getF());
 	}
 	
 	/**
 	 * Construtor Vertex
-	 * @param nome String
+	 * @param name String
 	 * @param x int
 	 * @param y int
 	 * @since 1.0 
 	 */
-	public Vertex(String nome, int x, int y){
-		this.setNome(nome);
-		this.setPonto(x, y);
-		this.v = new VertexPicture(getNome(), x, y, getD(), getF());
+	public Vertex(String name, int x, int y){
+		this.setName(name);
+		this.setPoint(x, y);
+		this.v = new VertexPicture(getName(), x, y, getD(), getF());
 	}
 	
 	/**
 	 * Construtor Vertex
-	 * @param nome String
+	 * @param name String
 	 * @param x int
 	 * @param y int
-	 * @param cor String
+	 * @param color String
 	 * @since 1.0 
 	 */
-	public Vertex(String nome, int x, int y, String cor){
-		this.setNome(nome);
-		this.setPonto(x, y);
-		this.setCor(cor);
-		this.v = new VertexPicture(getNome(), x, y, getD(), getF());
+	public Vertex(String name, int x, int y, String color){
+		this.setName(name);
+		this.setPoint(x, y);
+		this.setColor(color);
+		this.v = new VertexPicture(getName(), x, y, getD(), getF());
 	}
 
 	/**
 	 * Construtor Vertex
-	 * @param nome String
-	 * @param cor String
+	 * @param name String
+	 * @param color String
 	 * @since 1.0 
 	 */
-	public Vertex(String nome, String cor){
-		this.setNome(nome);
-		this.setCor(cor);
-		this.v = new VertexPicture(getNome(), 30, 30, getD(), getF());
+	public Vertex(String name, String color){
+		this.setName(name);
+		this.setColor(color);
+		this.v = new VertexPicture(getName(), 30, 30, getD(), getF());
 	}
 	
 	/**
@@ -81,8 +81,8 @@ public class Vertex implements Serializable {
 	 * @param y int
 	 * @since 1.0 
 	 */
-	public void setFigura(int x, int y){
-		this.v = new VertexPicture(getNome(), x, y, getD(), getF());
+	public void setPicture(int x, int y){
+		this.v = new VertexPicture(getName(), x, y, getD(), getF());
 	}
 	
 	/**
@@ -109,27 +109,27 @@ public class Vertex implements Serializable {
 	 * @param y int
 	 * @since 1.0 
 	 */
-	public void setPonto(int x, int y) {
+	public void setPoint(int x, int y) {
         this.setX(x);
         this.setY(y);
     }
 	
 	/**
 	 * Setar nome do vertice
-	 * @param nome String
+	 * @param name String
 	 * @since 1.0 
 	 */
-	public void setNome(String nome){
-		this.nome = nome;
+	public void setName(String name){
+		this.name = name;
 	}
 
 	/**
 	 * Setar cor do vertice
-	 * @param cor String
+	 * @param color String
 	 * @since 1.0 
 	 */
-	public void setCor(String cor){
-		this.cor = cor;
+	public void setColor(String color){
+		this.color = color;
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class Vertex implements Serializable {
 	 * @throws NullPointerException
 	 * @since 1.0 
 	 */
-	public VertexPicture getFigura() throws NullPointerException{
+	public VertexPicture getPicture() throws NullPointerException{
 		if(this.v == null) throw new NullPointerException("NULO");
 		else return this.v;
 	}
@@ -193,8 +193,8 @@ public class Vertex implements Serializable {
 	 * @return nome String
 	 * @since 1.0 
 	 */
-	public String getNome(){
-		return this.nome;
+	public String getName(){
+		return this.name;
 	}
 	
 	/**
@@ -202,8 +202,8 @@ public class Vertex implements Serializable {
 	 * @return cor String
 	 * @since 1.0 
 	 */
-	public String getCor(){
-		return this.cor;
+	public String getColor(){
+		return this.color;
 	}
 
 	/**
@@ -235,12 +235,12 @@ public class Vertex implements Serializable {
 		else return this.pi;
 	}
 	
-	public Component getComp() throws NullPointerException{
+	public Component getComponent() throws NullPointerException{
 		if(this.comp == null) throw new NullPointerException("NULO");
 		else return this.comp;
 	}
 	
-	public void setComp(Component comp) {
+	public void setComponent(Component comp) {
 		this.comp = comp;
 	}
 	
@@ -251,7 +251,7 @@ public class Vertex implements Serializable {
 	 */
 	public boolean equals(Vertex u){
 		
-		if((this.nome.equals(u.getNome())))	
+		if((this.name.equals(u.getName())))	
 			return true;
 		else
 			return false;

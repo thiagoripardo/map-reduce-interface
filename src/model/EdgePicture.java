@@ -19,7 +19,7 @@ public class EdgePicture implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	VertexPicture img1=null, img2=null;
-	int peso;
+	int weight;
 
 	/**
 	 * Construtor EdgePicture
@@ -31,16 +31,16 @@ public class EdgePicture implements Serializable {
 	 * Construtor EdgePicture
 	 * @param img1 model.VertexPicture
 	 * @param img2 model.VertexPicture
-	 * @param peso int
+	 * @param weight int
 	 * @since 1.0 
 	 */
-	public EdgePicture(VertexPicture img1, VertexPicture img2, int peso){
+	public EdgePicture(VertexPicture img1, VertexPicture img2, int weight){
 
 		this.img1 = img1;
 		this.img1 = img1;
 		this.img2 = img2;
 		this.img2 = img2;
-		this.peso = peso;
+		this.weight = weight;
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class EdgePicture implements Serializable {
 	 * @param g Graphics
 	 * @since 1.0 
 	 */
-	public void desenhandoLinha(Graphics g) {
+	public void drawLine(Graphics g) {
 
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -63,7 +63,7 @@ public class EdgePicture implements Serializable {
 	 * @param g Graphics
 	 * @since 1.0 
 	 */
-	public void desenhandoSeta(Graphics g) {
+	public void drawArrow(Graphics g) {
 
 		double deltaX = (img2.getX()-img1.getX());
 		double deltaY = (img2.getY()-img1.getY());
@@ -102,7 +102,7 @@ public class EdgePicture implements Serializable {
 
 		int[] PontosX = {img1.getX()+22,(int) ((img2.getX())+25-cos)};
 		int[] PontosY = {img1.getY()+28,(int) ((img2.getY())-sen)};
-		desenharLinhaSeta(g, PontosX, PontosY,10,5);
+		drawLineArrow(g, PontosX, PontosY,10,5);
 		Toolkit.getDefaultToolkit().sync();
 	}
 
@@ -111,7 +111,7 @@ public class EdgePicture implements Serializable {
 	 * @param g Graphics
 	 * @since 1.0 
 	 */
-	public void desenhandoElipse(Graphics g) {
+	public void drawEllipse(Graphics g) {
 
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -131,7 +131,7 @@ public class EdgePicture implements Serializable {
 	 * @param setaLarg int
 	 * @since 1.0 
 	 */
-	private void desenharLinhaSeta(Graphics g, int[] PontosX, int[] PontosY, int setaComp, int setaLarg){
+	private void drawLineArrow(Graphics g, int[] PontosX, int[] PontosY, int setaComp, int setaLarg){
 
 		double theta1;
 

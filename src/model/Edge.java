@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class Edge implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int peso;
-	private String nome;
+	private int weight;
+	private String name;
 	private Vertex u, v;
 	private EdgePicture a = null;
 	
@@ -31,7 +31,7 @@ public class Edge implements Serializable {
 	public Edge(Vertex u, Vertex v){
 		setVerticeU(u);
 		setVerticeV(v);
-		this.a = new EdgePicture(u.getFigura(),v.getFigura(), 0);
+		this.a = new EdgePicture(u.getPicture(),v.getPicture(), 0);
 	}
 	
 	/**
@@ -45,46 +45,45 @@ public class Edge implements Serializable {
 		setVerticeU(u);
 		setVerticeV(v);
 		setPeso(peso);
-		this.a = new EdgePicture(u.getFigura(),v.getFigura(), peso);
+		this.a = new EdgePicture(u.getPicture(),v.getPicture(), peso);
 	}
 
 	/**
 	 * Construtor Edge
 	 * @param u model.Vertex
 	 * @param v model.Vertex
-	 * @param nome String
+	 * @param name String
 	 * @since 1.0 
 	 */
-	public Edge(Vertex u, Vertex v, String nome){
-		setNome(nome);
+	public Edge(Vertex u, Vertex v, String name){
+		setNome(name);
 		setVerticeU(u);
 		setVerticeV(v);
-		this.a = new EdgePicture(u.getFigura(),v.getFigura(), 0);
+		this.a = new EdgePicture(u.getPicture(),v.getPicture(), 0);
 	}
 
 	/**
 	 * Construtor Edge
 	 * @param u model.Vertex
 	 * @param v model.Vertex
-	 * @param nome String
-	 * @param peso int
+	 * @param name String
+	 * @param weight int
 	 * @since 1.0 
 	 */
-	public Edge(Vertex u, Vertex v, String nome, int peso){
-		setNome(nome);
+	public Edge(Vertex u, Vertex v, String name, int weight){
+		setNome(name);
 		setVerticeU(u);
 		setVerticeV(v);
-		setPeso(peso);
-		this.a = new EdgePicture(u.getFigura(),v.getFigura(), peso);
+		setPeso(weight);
+		this.a = new EdgePicture(u.getPicture(),v.getPicture(), weight);
 	}
 
 	/**
 	 * Metodo para setar nome da aresta
-	 * @deprecated
 	 * @since 1.0 
 	 */
-	public void setNome(String nome){
-		this.nome = nome;
+	public void setNome(String name){
+		this.name = name;
 	}
 	
 	/**
@@ -107,8 +106,8 @@ public class Edge implements Serializable {
 	 * Metodo para setar peso
 	 * @since 1.0 
 	 */
-	public void setPeso(int peso){
-		this.peso = peso;
+	public void setPeso(int weight){
+		this.weight = weight;
 	}
 
 	/**
@@ -131,12 +130,11 @@ public class Edge implements Serializable {
 
 	/**
 	 * Metodo para retornar nome da aresta
-	 * @deprecated
 	 * @return nome String
 	 * @since 1.0 
 	 */
-	public String getNome(){
-		return this.nome;
+	public String getName(){
+		return this.name;
 	}
 
 	/**
@@ -144,8 +142,8 @@ public class Edge implements Serializable {
 	 * @return peso int
 	 * @since 1.0 
 	 */
-	public int getPeso(){
-		return this.peso;
+	public int getWeight(){
+		return this.weight;
 	}
 
 	/**
@@ -153,7 +151,7 @@ public class Edge implements Serializable {
 	 * @return a model.EdgePicture
 	 * @since 1.0 
 	 */
-	public EdgePicture getFigura() throws NullPointerException{
+	public EdgePicture getPicture() throws NullPointerException{
 		if(this.v == null) throw new NullPointerException("NULO");
 		else return this.a;
 	}
@@ -175,7 +173,7 @@ public class Edge implements Serializable {
 	 * @return boolean
 	 * @since 1.0 
 	 */
-	public boolean equalsOposta(Edge e){
+	public boolean equalsOposite(Edge e){
 		if((this.u.equals(e.getV()))&&(this.v.equals(e.getU())))
 			return true;
 		else

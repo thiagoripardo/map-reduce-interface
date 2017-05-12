@@ -67,34 +67,34 @@ public class Graph implements Serializable {
 	
 	/**
 	 * Metodo para retornar um determinado vertice
-	 * @param nome String
+	 * @param name String
 	 * @return v model.Vertex
 	 * @throws NullPointerException
 	 * @since 1.0
 	 */
-	public Vertex getVertice(String nome) throws NullPointerException{
+	public Vertex getVertex(String name) throws NullPointerException{
 		Iterator<Vertex> iter = getV().iterator();
 		Vertex u = null;
 		Vertex v = null;
 		while (iter.hasNext()){
 			u = iter.next();
-			if(u.getNome().equals(nome)){
+			if(u.getName().equals(name)){
 				v = u;
 			}
 		}
-		if(v==null) throw new NullPointerException(nome);
+		if(v==null) throw new NullPointerException(name);
 		else return v;
 	}
 	
 	/**
 	 * Metodo para retornar uma determinada aresta
-	 * @param nome1 String
-	 * @param nome2 String
+	 * @param name1 String
+	 * @param name2 String
 	 * @return e model.Edge
 	 * @throws NullPointerException
 	 * @since 1.0
 	 */
-	public Edge getAresta(String nome1, String nome2) throws NullPointerException{
+	public Edge getEdge(String name1, String name2) throws NullPointerException{
 		Vertex u = null;
 		Vertex v = null;
 		Vertex v2 = null;
@@ -102,10 +102,10 @@ public class Graph implements Serializable {
 		Iterator<Vertex> iter = getV().iterator();
 		while (iter.hasNext()){
 			u = iter.next();
-			if(u.getNome().equals(nome1)){
+			if(u.getName().equals(name1)){
 				v = u;
 			}
-			if(u.getNome().equals(nome2)){
+			if(u.getName().equals(name2)){
 				v2 = u;
 			}
 		}
@@ -139,20 +139,20 @@ public class Graph implements Serializable {
 	 * @return nome model.Vertex
 	 * @since 1.0
 	 */
-	public String getInfoVertices(){
+	public String getInfoOfVertexSet(){
 		Iterator<Vertex> iter = getV().iterator();
-		String nome = "{";
+		String name = "{";
 		Vertex u = null;
 
 		while (iter.hasNext()){
 			u = iter.next();
-			if (nome == "{")
-				nome = nome  + u.getNome();
+			if (name == "{")
+				name = name  + u.getName();
 			else
-				nome = nome + ", " + u.getNome();
+				name = name + ", " + u.getName();
 		}
-		nome = nome + "}";
-		return nome;
+		name = name + "}";
+		return name;
 	}
 
 	/**
@@ -160,8 +160,8 @@ public class Graph implements Serializable {
 	 * @return nome model.Edge
 	 * @since 1.0
 	 */
-	public String getInfoArestas(){
-		String nome = "{";
+	public String getInfoOfEdgeSet(){
+		String name = "{";
 
 		Iterator<Edge> iter = getE().iterator();
 		Edge edge = null;
@@ -173,12 +173,12 @@ public class Graph implements Serializable {
 			edge = iter.next();
 			u = edge.getU();
 			v = edge.getV();
-			if (nome == "{")
-				nome = nome + "(" + u.getNome() + ", " +v.getNome()+ ")";
+			if (name == "{")
+				name = name + "(" + u.getName() + ", " +v.getName()+ ")";
 			else
-				nome = nome + ", " +"(" + u.getNome() + ", " +v.getNome()+ ")";
+				name = name + ", " +"(" + u.getName() + ", " +v.getName()+ ")";
 		}
-		nome = nome + "}";
-		return nome;
+		name = name + "}";
+		return name;
 	}
 }

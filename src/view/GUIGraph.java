@@ -484,7 +484,7 @@ public final class GUIGraph extends GUI {
 			int option = JOptionPane.showConfirmDialog(null, message, "Agrupar Componentes", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try{
-					gc.agrupar(Integer.parseInt(nome1.getText()), Integer.parseInt(nome2.getText()));
+					gc.agroup(Integer.parseInt(nome1.getText()), Integer.parseInt(nome2.getText()));
 					repaint();
 				}
 				catch(NumberFormatException ex) {
@@ -517,7 +517,7 @@ public final class GUIGraph extends GUI {
 			int option = JOptionPane.showConfirmDialog(null, message, "Ajustar Posição de Componente", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try{
-					gc.ajustar(nome.getText(), Integer.parseInt(nome1.getText()), Integer.parseInt(nome2.getText()));
+					gc.adjust(nome.getText(), Integer.parseInt(nome1.getText()), Integer.parseInt(nome2.getText()));
 					repaint();
 				}
 				catch(NumberFormatException ex) {
@@ -573,7 +573,7 @@ public final class GUIGraph extends GUI {
 						}	
 					}
 					if(option == JOptionPane.OK_OPTION){
-						gc.addVertice(nome.getText(),Integer.parseInt(nome1.getText()),Integer.parseInt(nome2.getText()), selectedType);
+						gc.addVertex(nome.getText(),Integer.parseInt(nome1.getText()),Integer.parseInt(nome2.getText()), selectedType);
 						if(nome1.getText().equals("0")||nome2.getText().equals("0")){
 							nome1.setText(t);
 							nome2.setText(t);
@@ -603,7 +603,7 @@ public final class GUIGraph extends GUI {
 			try{
 				while(inputValue.equals(""))
 					inputValue = JOptionPane.showInputDialog(null,"\nUm componente nao pode ser nulo, certo?\n\nInsira o nome do componente:","Que feio! :/",JOptionPane.QUESTION_MESSAGE);
-				gc.removerVertice(inputValue);
+				gc.rmVertex(inputValue);
 				repaint();
 			}
 			catch(NullPointerException ex){}
@@ -630,7 +630,7 @@ public final class GUIGraph extends GUI {
 			};		
 			int option = JOptionPane.showConfirmDialog(null, message, "Inserir Ligacao", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
-				gc.addAresta(nome1.getText(),nome2.getText(),0);
+				gc.addEdge(nome1.getText(),nome2.getText(),0);
 				repaint();
 			}
 
@@ -662,7 +662,7 @@ public final class GUIGraph extends GUI {
 						option = JOptionPane.showConfirmDialog(null, message, "Remover Ligacao", JOptionPane.OK_CANCEL_OPTION);
 					}
 					if(option == JOptionPane.OK_OPTION)
-						gc.removerAresta(nome1.getText(), nome2.getText());
+						gc.rmEdge(nome1.getText(), nome2.getText());
 					repaint();
 				}
 				catch(NullPointerException ex){
@@ -691,7 +691,7 @@ public final class GUIGraph extends GUI {
 				gc.setGrafo(g);
 				dropPane.setGrafo(gc);
 				repaint();
-				gc.gerarAleatorio();
+				gc.randomGenerate();
 				repaint();
 			}
 		}
@@ -756,12 +756,12 @@ public final class GUIGraph extends GUI {
 			int option = JOptionPane.showConfirmDialog(null, message, "Componente (Especifico)", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try {
-					String value = g.getVertice(nome1.getText()).getPi().getNome();
-					JOptionPane.showMessageDialog(null, "Nome: "+g.getVertice(nome1.getText()).getNome()+"\nCor: "+g.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+g.getVertice(nome1.getText()).getFigura().getX()+", y="+g.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+g.getVertice(nome1.getText()).getD()+"\nF: "+g.getVertice(nome1.getText()).getF()+"\nPredecessor: "+value+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
+					String value = g.getVertex(nome1.getText()).getPi().getName();
+					JOptionPane.showMessageDialog(null, "Nome: "+g.getVertex(nome1.getText()).getName()+"\nCor: "+g.getVertex(nome1.getText()).getColor()+"\nPosicao: x="+g.getVertex(nome1.getText()).getPicture().getX()+", y="+g.getVertex(nome1.getText()).getPicture().getY()+"\nD: "+g.getVertex(nome1.getText()).getD()+"\nF: "+g.getVertex(nome1.getText()).getF()+"\nPredecessor: "+value+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(NullPointerException ex){
 					try {
-						JOptionPane.showMessageDialog(null, "Nome: "+g.getVertice(nome1.getText()).getNome()+"\nCor: "+g.getVertice(nome1.getText()).getCor()+"\nPosicao: x="+g.getVertice(nome1.getText()).getFigura().getX()+", y="+g.getVertice(nome1.getText()).getFigura().getY()+"\nD: "+g.getVertice(nome1.getText()).getD()+"\nF: "+g.getVertice(nome1.getText()).getF()+"\nPredecessor: "+"null"+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nome: "+g.getVertex(nome1.getText()).getName()+"\nCor: "+g.getVertex(nome1.getText()).getColor()+"\nPosicao: x="+g.getVertex(nome1.getText()).getPicture().getX()+", y="+g.getVertex(nome1.getText()).getPicture().getY()+"\nD: "+g.getVertex(nome1.getText()).getD()+"\nF: "+g.getVertex(nome1.getText()).getF()+"\nPredecessor: "+"null"+"\n","Componente (Especifico)", JOptionPane.INFORMATION_MESSAGE);
 					}
 					catch(NullPointerException ex2) {
 						JOptionPane.showMessageDialog(null,"O componente inserido nao existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
@@ -790,7 +790,7 @@ public final class GUIGraph extends GUI {
 			int option = JOptionPane.showConfirmDialog(null, message, "Ligacao (Especifica)", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION){
 				try {
-					JOptionPane.showMessageDialog(null, "Primeiro Componente: "+g.getVertice(nome1.getText()).getNome()+"\nSegundo Componente: "+g.getVertice(nome2.getText()).getNome()+"\nPeso: "+g.getAresta(nome1.getText(),nome2.getText()).getPeso(), "Ligacao Especifica", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Primeiro Componente: "+g.getVertex(nome1.getText()).getName()+"\nSegundo Componente: "+g.getVertex(nome2.getText()).getName()+"\nPeso: "+g.getEdge(nome1.getText(),nome2.getText()).getWeight(), "Ligacao Especifica", JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(NullPointerException ex){
 
@@ -810,7 +810,7 @@ public final class GUIGraph extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			JOptionPane.showMessageDialog(null, "Componentes: "+g.getInfoVertices()+ "\nQuantidade: "+ g.getV().size() ,"Conjunto de Componente", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Componentes: "+g.getInfoOfVertexSet()+ "\nQuantidade: "+ g.getV().size() ,"Conjunto de Componente", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -824,7 +824,7 @@ public final class GUIGraph extends GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			JOptionPane.showMessageDialog(null,"Ligacoes: " + g.getInfoArestas() + "\nQuantidade: " + g.getE().size()  ,"Conjunto de Ligacoes", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Ligacoes: " + g.getInfoOfEdgeSet() + "\nQuantidade: " + g.getE().size()  ,"Conjunto de Ligacoes", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

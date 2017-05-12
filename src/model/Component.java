@@ -1,5 +1,5 @@
 package model;
 
-public class Component {
+public interface Component {
 
 }

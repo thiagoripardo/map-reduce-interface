@@ -93,9 +93,9 @@ public class GraphPane extends JPanel implements ActionListener, Observer {
 			while (iter.hasNext()){
 				e = iter.next();
 				if(e.getU().equals(e.getV()))
-					e.getFigura().desenhandoElipse(g);
+					e.getPicture().drawEllipse(g);
 				else
-					e.getFigura().desenhandoSeta(g);
+					e.getPicture().drawArrow(g);
 			}
 		}
 		else{
@@ -104,15 +104,15 @@ public class GraphPane extends JPanel implements ActionListener, Observer {
 			while (iter.hasNext()){
 				e = iter.next();
 				if(e.getU().equals(e.getV()))
-					e.getFigura().desenhandoElipse(g);
+					e.getPicture().drawEllipse(g);
 				else
-					e.getFigura().desenhandoLinha(g);
+					e.getPicture().drawLine(g);
 			}
 		}
 
 		Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 		while (iter2.hasNext())
-			iter2.next().getFigura().desenhandoComponente(g);
+			iter2.next().getPicture().drawComponent(g);
 	}
 	
 	/**
@@ -129,8 +129,8 @@ public class GraphPane extends JPanel implements ActionListener, Observer {
 		Vertex v = null;
 		while (iter2.hasNext()){
 			v = iter2.next();
-			if(v.getFigura().componentArea){
-				v.getFigura().move();
+			if(v.getPicture().componentArea){
+				v.getPicture().move();
 				repaint();
 				break;
 			}
@@ -157,7 +157,7 @@ public class GraphPane extends JPanel implements ActionListener, Observer {
 			Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 
 			while (iter2.hasNext()){
-				iter2.next().getFigura().mouseDragged(e);
+				iter2.next().getPicture().mouseDragged(e);
 			}
 		}
 
@@ -182,7 +182,7 @@ public class GraphPane extends JPanel implements ActionListener, Observer {
 			Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 
 			while (iter2.hasNext()){
-				iter2.next().getFigura().mouseReleased(e);
+				iter2.next().getPicture().mouseReleased(e);
 			}
 		}
 		/**
@@ -195,7 +195,7 @@ public class GraphPane extends JPanel implements ActionListener, Observer {
 			Iterator<Vertex> iter2 = gc.getGrafo().getV().iterator();
 
 			while (iter2.hasNext()){
-				iter2.next().getFigura().mousePressed(e);
+				iter2.next().getPicture().mousePressed(e);
 			}
 		}
 

@@ -2,6 +2,6 @@ package mapreduce.components;
 
 import model.Component;
 
-public class Shuffler extends Component {
+public class Shuffler implements Component {
 
 }

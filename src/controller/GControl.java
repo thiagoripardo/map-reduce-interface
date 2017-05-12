@@ -9,7 +9,7 @@ import view.Observer;
 import model.*;
 
 /**
- * Controller principal da nossa aplicacao aqui eh onde ocorrem todas as alteracoes no grafo.
+ * Controller principal da aplicacao. Aqui eh onde ocorrem todas as alteracoes no grafo.
  * Exemplos: Adicionar, Remover (vertices e arestas).
  * 
  * @author Thiago Ripardo.
@@ -60,18 +60,18 @@ public class GControl {
 	
 	/**
 	 * Adiciona um novo vertice de acordo com seu nome e posicao.
-	 * @param nome String
+	 * @param name String
 	 * @param x int
 	 * @param y int
 	 * @since 1.0 
 	 */
-	public void addVertice(String nome, int x, int y) {
+	public void addVertex(String name, int x, int y) {
 		Vertex u = null;
 		try {
-			u = G.getVertice(nome);
+			u = G.getVertex(name);
 		}
 		catch (NullPointerException e) {
-			G.getV().add(new Vertex(nome, x, y));
+			G.getV().add(new Vertex(name, x, y));
 			//JOptionPane.showMessageDialog(frameDeControle,"Vertex inserido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 		}
 		finally {
@@ -82,21 +82,21 @@ public class GControl {
 
 	/**
 	 * Adiciona um novo vertice de acordo com seu nome e posicao.
-	 * @param nome String
+	 * @param name String
 	 * @param x int
 	 * @param y int
-	 * @param cor String
+	 * @param color String
 	 * @since 1.0 
 	 */
-	public void addVertice(String nome, int x, int y, String cor) {
+	public void addVertex(String name, int x, int y, String color) {
 		Vertex u = null;
 		try {
-			u = G.getVertice(nome);
+			u = G.getVertex(name);
 		}
 		catch (NullPointerException e) {
 			Vertex v;
-			v = new Vertex(nome, x, y, cor);
-			v.getFigura().setCor(cor);
+			v = new Vertex(name, x, y, color);
+			v.getPicture().setCor(color);
 			G.getV().add(v);
 			//JOptionPane.showMessageDialog(frameDeControle,"Vertex inserido com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -111,7 +111,7 @@ public class GControl {
 	 * @param v model.Vertex
 	 * @since 1.0 
 	 */
-	public void addVertice(Vertex v) {
+	public void addVertex(Vertex v) {
 		G.getV().add(v);
 	}
 
@@ -120,7 +120,7 @@ public class GControl {
 	 * @param e model.Edge
 	 * @since 1.0 
 	 */
-	public void addAresta(Edge e) {
+	public void addEdge(Edge e) {
 		G.getE().add(e);
 	}
 
@@ -130,34 +130,34 @@ public class GControl {
 	 * @param v model.Vertex
 	 * @since 1.0 
 	 */
-	public void addAresta(Vertex u, Vertex v) {
+	public void addEdge(Vertex u, Vertex v) {
 		G.getE().add(new Edge(u, v));
 	}
 
 	/**
 	 * Adiciona aresta de acordo com o nome de dois vertices e seu peso
-	 * @param nome1 String
-	 * @param nome2 String
-	 * @param peso int
+	 * @param name1 String
+	 * @param name2 String
+	 * @param weight int
 	 * @since 1.0 
 	 */
-	public void addAresta(String nome1, String nome2, int peso) {
+	public void addEdge(String name1, String name2, int weight) {
 		Edge e = null;
 		try {
-			e = G.getAresta(nome1, nome2);
+			e = G.getEdge(name1, name2);
 		}
 		catch(NullPointerException ex){
 			Vertex u = null;
 			Vertex v = null;
 			try{
-				u = G.getVertice(nome1);
-				v = G.getVertice(nome2);
+				u = G.getVertex(name1);
+				v = G.getVertex(name2);
 			}
 			catch(NullPointerException ex2){
 				JOptionPane.showMessageDialog(null,"Pelo menos um dos componentes inseridos nao existe, nao poderemos prosseguir. Tente novamente com componentes validos.","Ops! :(",JOptionPane.ERROR_MESSAGE);
 			}
 			if((u!=null)&&(v!=null)){
-				G.getE().add(new Edge(u, v, peso));
+				G.getE().add(new Edge(u, v, weight));
 				//JOptionPane.showMessageDialog(frameDeControle,"Edge inserida com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
@@ -169,13 +169,13 @@ public class GControl {
 
 	/**
 	 * Remove vertice de acordo com seu nome
-	 * @param nome String
+	 * @param name String
 	 * @since 1.0 
 	 */
-	public void removerVertice(String nome) {
+	public void rmVertex(String name) {
 		Vertex u = null;
 		try{
-			u = G.getVertice(nome);
+			u = G.getVertex(name);
 			Iterator<Edge> iter = G.getE().iterator();
 			Edge e = null;
 
@@ -198,15 +198,15 @@ public class GControl {
 
 	/**
 	 * Remove aresta de acordo com o nome de seus vertices
-	 * @param nome1 String
-	 * @param nome2 String
+	 * @param name1 String
+	 * @param name2 String
 	 * @since 1.0 
 	 */
-	public void removerAresta(String nome1, String nome2) {
+	public void rmEdge(String name1, String name2) {
 		Edge e = null;
 		try{
 
-			e = G.getAresta(nome1,nome2);
+			e = G.getEdge(name1,name2);
 			G.getE().remove(e);
 			//JOptionPane.showMessageDialog(frameDeControle,"Edge removida com sucesso!","Yeah! :D",JOptionPane.INFORMATION_MESSAGE);
 
@@ -226,24 +226,24 @@ public class GControl {
 		new Thread(new Runnable() {  
 			public void run() {  
 				try{
-					if(G.getVertice(s) != null){
-						resetarEstado();
+					if(G.getVertex(s) != null){
+						resetState();
 						Iterator<Vertex> iter = G.getV().iterator();
 						Vertex u = new Vertex();
 						while (iter.hasNext()){
 							u = iter.next();
-							u.setCor("Branco");
+							u.setColor("Branco");
 							u.setD(null); // O parametro null está sendo usado como infinito.
 							u.setPi(null);
 							atualizar(u);
-							dormir();
+							sleep();
 						}
-						G.getVertice(s).setCor("Cinza");
-						G.getVertice(s).setD(0);
-						atualizar(G.getVertice(s));
-						dormir();
+						G.getVertex(s).setColor("Cinza");
+						G.getVertex(s).setD(0);
+						atualizar(G.getVertex(s));
+						sleep();
 						Queue<Vertex> f = new Queue<>();
-						f.add(G.getVertice(s));
+						f.add(G.getVertex(s));
 						while(f.isEmpty() == false){
 							u = f.remove();
 							if(G.getDir() == false){
@@ -260,19 +260,19 @@ public class GControl {
 										v = e.getU();
 
 									if(G.getV().contains(v)){	
-										if(v.getCor().equals("Branco")){
-											v.setCor("Cinza");
+										if(v.getColor().equals("Branco")){
+											v.setColor("Cinza");
 											v.setD(u.getD() + 1);
 											v.setPi(u);
 											atualizar(v);
-											dormir();
+											sleep();
 											f.add(v);
 										}
 									}
 								}
-								u.setCor("Preto");
+								u.setColor("Preto");
 								atualizar(u);
-								dormir();
+								sleep();
 							}
 							else {
 								Iterator<Edge> iter2 = G.getE().iterator();
@@ -286,19 +286,19 @@ public class GControl {
 									}
 
 									if(G.getV().contains(v)){
-										if(v.getCor().equals("Branco")){
-											v.setCor("Cinza");
+										if(v.getColor().equals("Branco")){
+											v.setColor("Cinza");
 											v.setD(u.getD() + 1);
 											v.setPi(u);
 											atualizar(v);
-											dormir();
+											sleep();
 											f.add(v);
 										}
 									}
 								}
-								u.setCor("Preto");
+								u.setColor("Preto");
 								atualizar(u);
-								dormir();
+								sleep();
 							}
 						}
 					}
@@ -320,26 +320,26 @@ public class GControl {
 		new Thread(new Runnable() {  
 			public void run() {
 
-				resetarEstado();
+				resetState();
 				Vertex u = null;
 				Iterator<Vertex> iter = G.getV().iterator();
 				if(iter.hasNext()){
 					try{
-						u = G.getVertice(s);
+						u = G.getVertex(s);
 						while (iter.hasNext()){
 							u = iter.next();
-							u.setCor("Branco");
+							u.setColor("Branco");
 							u.setPi(null);
 							atualizar(u);
-							dormir();
+							sleep();
 						}
 						int tempo = 0;
 
-						tempo = visitar(G,G.getVertice(s),tempo);
+						tempo = visitar(G,G.getVertex(s),tempo);
 						Iterator<Vertex> iter2 = G.getV().iterator();
 						while (iter2.hasNext()){
 							u = iter2.next();
-							if(u.getCor().equals("Branco")){
+							if(u.getColor().equals("Branco")){
 								tempo = visitar(G,u,tempo);
 							}
 						}
@@ -359,16 +359,16 @@ public class GControl {
 	 * Algoritmo visitar da busca em profundidade.
 	 * @param G model.Graph
 	 * @param u model.Vertex
-	 * @param tempo int
+	 * @param time int
 	 * @return tempo Retorna novo tempo
 	 * @since 1.0 
 	 */
-	public int visitar(Graph G, Vertex u, int tempo){
-		tempo = tempo + 1;
-		u.setD(tempo);
-		u.setCor("Cinza");
+	public int visitar(Graph G, Vertex u, int time){
+		time = time + 1;
+		u.setD(time);
+		u.setColor("Cinza");
 		atualizar(u);
-		dormir();
+		sleep();
 		if(G.getDir() == false){
 			Iterator<Edge> iter = G.getE().iterator();
 			while (iter.hasNext()){
@@ -383,9 +383,9 @@ public class GControl {
 					v = e.getU();
 
 				if(G.getV().contains(v)){
-					if(v.getCor().equals("Branco")){
+					if(v.getColor().equals("Branco")){
 						v.setPi(u);
-						tempo = visitar(G,v, tempo);
+						time = visitar(G,v, time);
 					}
 				}
 			}
@@ -402,19 +402,19 @@ public class GControl {
 				}
 
 				if(G.getV().contains(v)){
-					if(v.getCor().equals("Branco")){
+					if(v.getColor().equals("Branco")){
 						v.setPi(u);
-						tempo = visitar(G,v, tempo);
+						time = visitar(G,v, time);
 					}
 				}
 			}
 		}
-		u.setCor("Preto");
-		tempo = tempo + 1;
-		u.setF(tempo);
+		u.setColor("Preto");
+		time = time + 1;
+		u.setF(time);
 		atualizar(u);
-		dormir();
-		return tempo;
+		sleep();
+		return time;
 	}
 
 	/**
@@ -426,9 +426,9 @@ public class GControl {
 	 */
 	public void atualizar(Vertex u){
 
-		u.getFigura().setCor(u.getCor());
-		u.getFigura().setD(u.getD());
-		u.getFigura().setF(u.getF());
+		u.getPicture().setCor(u.getColor());
+		u.getPicture().setD(u.getD());
+		u.getPicture().setF(u.getF());
 		notifyAllObservers();
 		
 	}
@@ -437,7 +437,7 @@ public class GControl {
 	 * Faz determinada Thread dormir por 1 segundo.
 	 * @since 1.0 
 	 */
-	public void dormir(){
+	public void sleep(){
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -449,17 +449,17 @@ public class GControl {
 	 * Reseta estado atual do grafo para o estado original no qual foi criado.
 	 * @since 1.0 
 	 */
-	public void resetarEstado(){
+	public void resetState(){
 		Iterator<Vertex> iter = G.getV().iterator();
 		Vertex u = null;
 		while (iter.hasNext()){
 			u = iter.next();
-			u.setCor(null);
+			u.setColor(null);
 			u.setD(null);
 			u.setF(null);
-			u.getFigura().setCor("dgray");
-			u.getFigura().setD(null);
-			u.getFigura().setF(null);
+			u.getPicture().setCor("dgray");
+			u.getPicture().setD(null);
+			u.getPicture().setF(null);
 		}
 	}
 
@@ -469,7 +469,7 @@ public class GControl {
 	 * @param y int
 	 * @since 1.0 
 	 */
-	public void agrupar(int x, int y){
+	public void agroup(int x, int y){
 		Iterator<Vertex> iter = G.getV().iterator();
 		Vertex u = null;
 		if(iter.hasNext()){
@@ -477,8 +477,8 @@ public class GControl {
 				u = iter.next();
 				u.setX(x);
 				u.setY(y);
-				u.getFigura().setX(x);
-				u.getFigura().setY(y);
+				u.getPicture().setX(x);
+				u.getPicture().setY(y);
 				//pane.repaint();
 			}
 		}
@@ -489,18 +489,18 @@ public class GControl {
 
 	/**
 	 * Ajusta um determinado vertice a uma posicao escolhida.
-	 * @param nome String
+	 * @param name String
 	 * @param x int
 	 * @param y int
 	 * @since 1.0 
 	 */
-	public void ajustar(String nome, int x, int y){
+	public void adjust(String name, int x, int y){
 		try{
-			Vertex u = G.getVertice(nome);
+			Vertex u = G.getVertex(name);
 			u.setX(x);
 			u.setY(y);
-			u.getFigura().setX(x);
-			u.getFigura().setY(y);
+			u.getPicture().setX(x);
+			u.getPicture().setY(y);
 		}
 		catch (NullPointerException ex){
 			JOptionPane.showMessageDialog(null,"O componente inserido não existe!","Ops! :(",JOptionPane.ERROR_MESSAGE);
@@ -513,7 +513,7 @@ public class GControl {
 	 * Gera um grafo aleatorio entre 5 e 25 vertices.
 	 * @since 1.0 
 	 */
-	public void gerarAleatorio(){
+	public void randomGenerate(){
 
 		Random gerador = new Random();
 		int i;
@@ -521,7 +521,7 @@ public class GControl {
 		int numeroE = gerador.nextInt(numeroV*(numeroV-1)/2);
 
 		for (i=0; i<=numeroV; i++)
-			addVertice("v"+String.valueOf(i), gerador.nextInt(840), gerador.nextInt(480) + 10);
+			addVertex("v"+String.valueOf(i), gerador.nextInt(840), gerador.nextInt(480) + 10);
 
 		for (i=0; i<=numeroE; i++){
 
@@ -529,10 +529,10 @@ public class GControl {
 			int primeiroVertice = gerador.nextInt(numeroV);
 			int segundoVertice = gerador.nextInt(numeroV);
 			try {
-				e = G.getAresta("v" + String.valueOf(primeiroVertice), "v" + String.valueOf(segundoVertice));
+				e = G.getEdge("v" + String.valueOf(primeiroVertice), "v" + String.valueOf(segundoVertice));
 			}
 			catch(NullPointerException ex){
-				addAresta("v" + String.valueOf(primeiroVertice), "v" + String.valueOf(segundoVertice), 0);
+				addEdge("v" + String.valueOf(primeiroVertice), "v" + String.valueOf(segundoVertice), 0);
 			}
 			finally { 
 				if(e!=null) {}

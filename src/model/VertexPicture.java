@@ -28,8 +28,8 @@ public class VertexPicture implements Serializable {
 	private static final long serialVersionUID = 1L;
 	int x, y;
 	int dx,dy; 
-	Integer nomeD, nomeF;
-	String nomeVertice, cor="dgray";
+	Integer nameD, nameF;
+	String nameVertex, cor="dgray";
 	public boolean componentArea;
 	public boolean portArea;
 
@@ -46,19 +46,19 @@ public class VertexPicture implements Serializable {
 
 	/**
 	 * Construtor VertexPicture
-	 * @param nome String
+	 * @param name String
 	 * @param x int
 	 * @param y int
-	 * @param nomeD Integer
-	 * @param nomeF Integer
+	 * @param nameD Integer
+	 * @param nameF Integer
 	 * @since 1.0
 	 */
-	public VertexPicture(String nome ,int x, int y, Integer nomeD, Integer nomeF){
+	public VertexPicture(String name ,int x, int y, Integer nameD, Integer nameF){
 
 		
-		this.nomeVertice = nome;
-		this.nomeD = nomeD;
-		this.nomeF = nomeF;
+		this.nameVertex = name;
+		this.nameD = nameD;
+		this.nameF = nameF;
 		
 		//inicia variavel X e Y com a posição inicial
 		if((x==0)||(y==0)){
@@ -90,7 +90,7 @@ public class VertexPicture implements Serializable {
 	 * @param g Graphics
 	 * @since 1.0
 	 */
-	public void desenhandoComponente(Graphics g) {
+	public void drawComponent(Graphics g) {
 
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -153,7 +153,7 @@ public class VertexPicture implements Serializable {
 		g.drawLine(getX() -10, getY() +25, getX(), getY() +25);
 		g.drawLine(getX() +75, getY() +25, getX() +85, getY() +25);
 		g2d.fillOval(getX() +85, getY() +15, 20, 20);
-		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
+		g2d.drawString(this.nameVertex, getX()+16, getY()-5);
 	}
 	
 	public void drawDataSourceComponent(Graphics g, Graphics2D g2d){
@@ -168,7 +168,7 @@ public class VertexPicture implements Serializable {
 		//g.drawLine(getX() -10, getY() +25, getX(), getY() +25);
 		g.drawLine(getX() +75, getY() +25, getX() +85, getY() +25);
 		g2d.fillOval(getX() +85, getY() +15, 20, 20);
-		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
+		g2d.drawString(this.nameVertex, getX()+16, getY()-5);
 	}
 	
 	public void drawDataSinkComponent(Graphics g, Graphics2D g2d){
@@ -183,7 +183,7 @@ public class VertexPicture implements Serializable {
 		//g.drawLine(getX() -10, getY() +25, getX(), getY() +25);
 		g.drawLine(getX() +38, getY(), getX() +38, getY() -50);
 		g2d.fillOval(getX() +28, getY() -50, 20, 20);
-		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
+		g2d.drawString(this.nameVertex, getX()+16, getY()-5);
 	}
 	
 	public void splitter(Graphics g, Graphics2D g2d){
@@ -198,7 +198,7 @@ public class VertexPicture implements Serializable {
 		g.drawLine(getX() +75, getY() +25, getX() +85, getY() +25);
 		g.drawLine(getX() +38, getY() +50, getX() +38, getY() +75);
 		g2d.fillOval(getX() +85, getY() +15, 20, 20);
-		g2d.drawString(this.nomeVertice, getX()+16, getY()-5);
+		g2d.drawString(this.nameVertex, getX()+16, getY()-5);
 	}
 	
 	/**
@@ -282,7 +282,7 @@ public class VertexPicture implements Serializable {
 	 * @since 1.0
 	 */
 	public void setD(Integer d){
-		this.nomeD = d;
+		this.nameD = d;
 	}
 	
 	/**
@@ -291,7 +291,7 @@ public class VertexPicture implements Serializable {
 	 * @since 1.0
 	 */
 	public void setF(Integer f){
-		this.nomeF = f;
+		this.nameF = f;
 	}
 	
 	/**
@@ -327,7 +327,7 @@ public class VertexPicture implements Serializable {
 	 * @since 1.0
 	 */
 	public Integer getD(){
-		return this.nomeD;
+		return this.nameD;
 	}
 	
 	/**
@@ -336,7 +336,7 @@ public class VertexPicture implements Serializable {
 	 * @since 1.0
 	 */
 	public Integer getF(){
-		return this.nomeF;
+		return this.nameF;
 	}
 	
 }

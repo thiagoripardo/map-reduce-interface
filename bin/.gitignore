@@ -1,7 +1,5 @@
 /controller/
-/handlers/
+/view/
 /mapreduce/
 /model/
-/readerwriter/
-/view/
-/source.txt
+/handlers/
