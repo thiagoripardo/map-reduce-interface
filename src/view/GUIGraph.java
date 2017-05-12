@@ -24,7 +24,6 @@ import java.io.IOException;
 public final class GUIGraph extends GUI {
 
 	private static final long serialVersionUID = 1L;
-	//private GUI frameDeControle;
 	private Graph g = new Graph(true);
 	private GControl gc = new GControl(g);
 	private final GraphPane dropPane = new GraphPane(gc);
@@ -36,14 +35,14 @@ public final class GUIGraph extends GUI {
 	public GUIGraph(){
 
 		super("MapReduceInterface");
-		iniciar();
+		init();
 	}
 
 	/**
 	 * Inicia os objetos como: paineis, menus, menuitens, barras de menu, etc.
 	 */
 	
-	public void iniciar(){
+	public void init(){
 
 		// Icone da GUIGraph(frame)
 		Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/graph.png"));  
@@ -154,43 +153,43 @@ public final class GUIGraph extends GUI {
 		JButton addV = new JButton();
 		addV.setIcon(vi);
 		addV.setOpaque(false);
-		addV.addActionListener(new HandlerAddVertice());
+		addV.addActionListener(new HandlerAddVertex());
 
 		// Botao remover vertice
 		JButton remV = new JButton();
 		remV.setIcon(vr);
 		remV.setOpaque(false);
-		remV.addActionListener(new HandlerRemVertice());
+		remV.addActionListener(new HandlerRmVertex());
 
 		// Botao procurar vertice
 		JButton proV = new JButton();
 		proV.setIcon(vesp);
 		proV.setOpaque(false);
-		proV.addActionListener(new HandlerVerticeEsp());
+		proV.addActionListener(new HandlerSpecificVertex());
 
 		// Botao adicionar aresta
 		JButton addA = new JButton();
 		addA.setIcon(ai);
 		addA.setOpaque(false);
-		addA.addActionListener(new HandlerAddAresta());
+		addA.addActionListener(new HandlerAddEdge());
 
 		// Botao remover aresta
 		JButton remA = new JButton();
 		remA.setIcon(ar);
 		remA.setOpaque(false);
-		remA.addActionListener(new HandlerRemAresta());
+		remA.addActionListener(new HandlerRmEdge());
 
 		// Botao procurar aresta
 		JButton proA = new JButton();
 		proA.setIcon(aesp);
 		proA.setOpaque(false);
-		proA.addActionListener(new HandlerArestaEsp());
+		proA.addActionListener(new HandlerSpecificEdge());
 		
 		// Botao procurar aresta
 		JButton execMP = new JButton();
 		execMP.setIcon(exec);
 		execMP.setOpaque(false);
-		execMP.addActionListener(new HandlerAbrirTexto());
+		execMP.addActionListener(new HandlerOpentext());
 
 		toolBar.add(vert);
 		toolBar.add(addV);
@@ -209,20 +208,20 @@ public final class GUIGraph extends GUI {
 		//menuArquivo.setMnemonic(KeyEvent.VK_W);
 
 		// Novo
-		itemNovo.addActionListener(new HandlerNovo());
+		itemNovo.addActionListener(new HandlerNew());
 		menuArquivo.add(itemNovo);
 
 		// Abrir
-		itemAbrir.addActionListener(new HandlerAbrir());
+		itemAbrir.addActionListener(new HandlerOpen());
 		menuArquivo.add(itemAbrir);
 
 		// Salvar
-		itemSalvar.addActionListener(new HandlerSalvar());
+		itemSalvar.addActionListener(new HandlerSave());
 		menuArquivo.add(itemSalvar);
 
 		// Sair
 		//itemSair.setMnemonic(KeyEvent.VK_C);
-		itemSair.addActionListener(new HandlerSair());
+		itemSair.addActionListener(new HandlerExit());
 		menuArquivo.add(itemSair);
 
 		// Direcionado
@@ -244,30 +243,30 @@ public final class GUIGraph extends GUI {
 //		});
 
 		// Ajustar
-		itemAjustar.addActionListener(new HandlerAjustar());
+		itemAjustar.addActionListener(new HandlerAdjust());
 
 		// Agrupar
-		itemAgrupar.addActionListener(new HandlerAgrupar());
+		itemAgrupar.addActionListener(new HandlerAgroup());
 
 		// Inserir Vertex
 		//itemVerticeI.setMnemonic(KeyEvent.VK_C);
-		itemVerticeI.addActionListener(new HandlerAddVertice());
+		itemVerticeI.addActionListener(new HandlerAddVertex());
 		menuInserir.add(itemVerticeI);
 
 		// Inserir Edge
-		itemArestaI.addActionListener(new HandlerAddAresta());
+		itemArestaI.addActionListener(new HandlerAddEdge());
 
 		menuInserir.add(itemArestaI);
 
 		// Remover Vertex
 		itemVerticeR.setMnemonic(KeyEvent.VK_W);
-		itemVerticeR.addActionListener(new HandlerRemVertice());
+		itemVerticeR.addActionListener(new HandlerRmVertex());
 
 		menuRemover.add(itemVerticeR);
 
 		// Remover Edge
 		//itemArestaR.setMnemonic(KeyEvent.VK_W);
-		itemArestaR.addActionListener(new HandlerRemAresta());
+		itemArestaR.addActionListener(new HandlerRmEdge());
 
 		menuRemover.add(itemArestaR);
 
@@ -287,25 +286,25 @@ public final class GUIGraph extends GUI {
 		menuExecutar.addSeparator();
 		
 		// Gerar Aleatorio
-		itemGerarAle.addActionListener(new HandlerGerarAleatorio());
+		itemGerarAle.addActionListener(new HandlerRandomGenerate());
 		menuExecutar.add(itemGerarAle);
 		menuExecutar.addSeparator();
 
 		// Menu Geral
 		//itemGeral.setMnemonic(KeyEvent.VK_C);
-		itemGeral.addActionListener(new HandlerGeral());
+		itemGeral.addActionListener(new HandlerGeneral());
 		menuInfo.add(itemGeral);
 
 		menuInfo.addSeparator();
 
 		// Vertex Especifico
 		//itemVEsp.setMnemonic(KeyEvent.VK_C);
-		itemVEsp.addActionListener(new HandlerVerticeEsp());
+		itemVEsp.addActionListener(new HandlerSpecificVertex());
 		menuInfo.add(itemVEsp);
 
 		// Edge Especifica
 		//itemAEsp.setMnemonic(KeyEvent.VK_C);
-		itemAEsp.addActionListener(new HandlerAddAresta());
+		itemAEsp.addActionListener(new HandlerAddEdge());
 		menuInfo.add(itemAEsp);
 		menuInfo.addSeparator();
 
@@ -324,14 +323,14 @@ public final class GUIGraph extends GUI {
 
 		// Verificar Atualizacoes
 		//itemVAtual.setMnemonic(KeyEvent.VK_C);
-		itemVAtual.addActionListener(new HandlerVAtual());
+		itemVAtual.addActionListener(new HandlerVActual());
 		menuAjuda.add(itemVAtual);
 
 		menuAjuda.addSeparator();
 
 		// Sobre
 		//itemSobre.setMnemonic(KeyEvent.VK_C);
-		itemSobre.addActionListener(new HandlerSobre());
+		itemSobre.addActionListener(new HandlerAbout());
 		menuAjuda.add(itemSobre);
 
 		menuBar.add(menuArquivo);
@@ -385,7 +384,7 @@ public final class GUIGraph extends GUI {
 	 * @param G model.Graph
 	 * @since 1.0 
 	 */
-	public void setGrafo(Graph G){
+	public void setGraph(Graph G){
 		this.g = G;
 	}
 	
@@ -395,20 +394,20 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerNovo implements ActionListener{
+	private class HandlerNew implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object[] message = {"Esta ação apagará todo o conteudo do Graph.\nDeseja salvá-lo antes de cotinuar?"};
 			int option = JOptionPane.showOptionDialog(null, message, "Novo Graph", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Não","Cancelar"}, "Sim");
 			if(option == JOptionPane.YES_OPTION){
-				(new GraphWriter(g)).iniciar();
-				setGrafo(new Graph());
+				(new GraphWriter(g)).init();
+				setGraph(new Graph());
 				gc.setGrafo(g);
 				dropPane.setGrafo(gc);
 				repaint();
 			}
 			if(option == JOptionPane.NO_OPTION){
-				setGrafo(new Graph());
+				setGraph(new Graph());
 				gc.setGrafo(g);
 				dropPane.setGrafo(gc);
 				repaint();
@@ -421,12 +420,12 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerAbrir implements ActionListener{
+	private class HandlerOpen implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try{
 				GraphReader ag = new GraphReader();
-				setGrafo(ag.iniciar());
+				setGraph(ag.init());
 				gc.setGrafo(g);
 				dropPane.setGrafo(gc);
 				repaint();
@@ -440,11 +439,11 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerSalvar implements ActionListener{
+	private class HandlerSave implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			(new GraphWriter(g)).iniciar();
+			(new GraphWriter(g)).init();
 		}
 	}
 
@@ -453,7 +452,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerSair implements ActionListener{
+	private class HandlerExit implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object[] message = {"Deseja fechar o programa?\nVoce tem certeza disso?"};
@@ -470,7 +469,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerAgrupar implements ActionListener{
+	private class HandlerAgroup implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -500,7 +499,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerAjustar implements ActionListener{
+	private class HandlerAdjust implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -533,7 +532,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerAddVertice implements ActionListener{
+	private class HandlerAddVertex implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -595,7 +594,7 @@ public final class GUIGraph extends GUI {
 	 * Classe privada que trata eventos do JMenuItem RemVertice.
 	 * @since 1.0 
 	 */
-	private class HandlerRemVertice implements ActionListener{
+	private class HandlerRmVertex implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -617,7 +616,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerAddAresta implements ActionListener{
+	private class HandlerAddEdge implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -643,7 +642,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerRemAresta implements ActionListener{
+	private class HandlerRmEdge implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -680,14 +679,14 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerGerarAleatorio implements ActionListener{
+	private class HandlerRandomGenerate implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object[] message = {"Esta ação apagará todo o conteudo do Graph atual e gerará um novo grafo aleatoriamente.\nVoce tem certeza disso?"};
 			int option = JOptionPane.showOptionDialog(null, message, "Graph Aleatório", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Nao"}, "Nao");
 			if(option == JOptionPane.YES_OPTION){
-				setGrafo(new Graph());
+				setGraph(new Graph());
 				gc.setGrafo(g);
 				dropPane.setGrafo(gc);
 				repaint();
@@ -697,7 +696,7 @@ public final class GUIGraph extends GUI {
 		}
 	}
 	
-	private class HandlerAbrirTexto implements ActionListener{
+	private class HandlerOpentext implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -726,7 +725,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerGeral implements ActionListener{
+	private class HandlerGeneral implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -744,7 +743,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerVerticeEsp implements ActionListener{
+	private class HandlerSpecificVertex implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -776,7 +775,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerArestaEsp implements ActionListener{
+	private class HandlerSpecificEdge implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -833,7 +832,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerVAtual implements ActionListener{
+	private class HandlerVActual implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -846,7 +845,7 @@ public final class GUIGraph extends GUI {
 	 * @version 1.0
 	 * @since 1.0 
 	 */
-	private class HandlerSobre implements ActionListener{
+	private class HandlerAbout implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {

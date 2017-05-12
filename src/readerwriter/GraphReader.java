@@ -19,8 +19,6 @@ import view.GUI;
  */
 public class GraphReader {
 
-	private GUI frameDeControle;
-
 	/**
 	 * Construtor GraphReader
 	 * @since 1.0
@@ -33,7 +31,7 @@ public class GraphReader {
 	 * @throws NullPointerException
 	 * @since 1.0
 	 */
-	public Graph iniciar() throws NullPointerException{
+	public Graph init() throws NullPointerException{
 
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter("Arquivo .graph", "graph"));    
@@ -58,7 +56,7 @@ public class GraphReader {
 					
 				} 
 				catch (ClassNotFoundException e) {
-					JOptionPane.showMessageDialog(frameDeControle, "Classe não encontrada","Erro ao Abrir", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Classe não encontrada","Erro ao Abrir", JOptionPane.ERROR_MESSAGE);
 				} 
 
 				oi.close(); 
@@ -66,7 +64,7 @@ public class GraphReader {
 			}
 			catch (IOException e) { 
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(frameDeControle, "O arquivo não é do tipo .graph ou está desatualizado.","Erro ao Abrir", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "O arquivo não é do tipo .graph ou está desatualizado.","Erro ao Abrir", JOptionPane.ERROR_MESSAGE);
 			}
 			
 		}

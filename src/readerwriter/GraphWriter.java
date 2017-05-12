@@ -19,7 +19,7 @@ import view.GUI;
 public class GraphWriter {
 
 	private Graph G = null;
-	private GUI frameDeControle;
+	private GUI controlFrame;
 
 	/**
 	 * Construtor GraphWriter
@@ -35,12 +35,12 @@ public class GraphWriter {
 	 * @throws NullPointerException
 	 * @since 1.0
 	 */
-	public void iniciar(){
+	public void init(){
 
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter("Arquivo .graph", "graph"));    
 		fc.setAcceptAllFileFilterUsed(false); 
-		int c = fc.showSaveDialog(frameDeControle);
+		int c = fc.showSaveDialog(controlFrame);
 
 		if(c == JFileChooser.APPROVE_OPTION){
 			String nm = fc.getSelectedFile().getAbsolutePath();
@@ -57,7 +57,7 @@ public class GraphWriter {
 
 			}
 			catch (IOException e) { 
-				JOptionPane.showMessageDialog(frameDeControle, "Permissão Negada!","Erro ao Salvar", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(controlFrame, "Permissão Negada!","Erro ao Salvar", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
